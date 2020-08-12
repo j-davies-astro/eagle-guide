@@ -4,7 +4,7 @@ With this brief guide, I hope to get you up and running with the EAGLE simulatio
 
 ### Prerequisites
 
-- I'll assume that you've read the original EAGLE papers: 
+- I'll assume that you've read the original EAGLE papers: [Schaye et al. (2015)](https://academic.oup.com/mnras/article/446/1/521/1316115) and [Crain et al. (2015)](https://academic.oup.com/mnras/article/450/2/1937/984366). They introduce the simulation nomenclature and both explain and justify the physics in the EAGLE model.
 
 - We will be working in the Ubuntu (Linux) operating system, which runs on all ARI _starpc_ machines. If you're working remotely or using a personal computer, you can access the ARI systems via the machines _external1_ and _external2_. This can be done two different ways:
 
