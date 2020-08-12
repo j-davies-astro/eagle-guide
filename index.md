@@ -48,9 +48,10 @@ Now, clone the `pyread_eagle` git repository here by pasting the following into 
 ```
 git clone https://github.com/kyleaoman/pyread_eagle.git
 ```
-You should now have a directory named `pyread_eagle`. `cd` into it and type
+You should now have a directory named `pyread_eagle`. Now we can enter it and install the module:
 ```
-pip install --user -e .
+cd pyread_eagle
+pip3.5 install --user -e .
 ```
 to install the package into your `$PYTHONPATH` via symlink (this means that when you update your copy of the repository, the installed version of the module also updates). Check that the module installed by importing it into python:
 ```
