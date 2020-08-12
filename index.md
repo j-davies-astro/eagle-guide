@@ -4,10 +4,13 @@ With this brief guide, I hope to get you up and running with the EAGLE simulatio
 
 ### Prerequisites
 
-- We will be working in the Ubuntu (Linux) operating system, which runs on all ARI _starpc_ machines. If you're working remotely or using a personal computer, you can access the ARI systems via the machines _external_ and _external2_. This can be done two different ways:
+- I'll assume that you've read the original EAGLE papers: 
+
+- We will be working in the Ubuntu (Linux) operating system, which runs on all ARI _starpc_ machines. If you're working remotely or using a personal computer, you can access the ARI systems via the machines _external1_ and _external2_. This can be done two different ways:
 
   - **Command line:** Type `ssh <your_username>@external2.astro.ljmu.ac.uk>` and type in your password when prompted. Unfortunately, X11 forwarding is blocked, so you won't be able to use any graphical interfaces through this method. A better method is to use...
   - **NoMachine:** You can access a full Linux environment remotely using NoMachine. Please see [the ARI Docs pages](https://www.astro.ljmu.ac.uk/docs/) for information on how to set this up.
+  
   
 - All code will be run from a Linux terminal/command line. By default, the ARI systems use `csh`. I recommend you get familiar with some basic Linux commands if you aren't already - commands like `cd`, `ls`, `top`, `grep`, `more` and `tail` will be invaluable to you.
 
@@ -18,30 +21,13 @@ With this brief guide, I hope to get you up and running with the EAGLE simulatio
   - `tqdm` for showing progress bars while your code runs
 
 
-```markdown
-Syntax highlighted code block
+### Running your code
 
-# Header 1
-## Header 2
-### Header 3
+You should **not** run your code on either a _starpc_ or _external1/2_. When it comes to analysing cosmological simulations, machines like these are simply not up to the task! The EAGLE simulations follow the evolution of billions of particles and consume enormous amounts of memory when loaded in from disk - for example, simply loading the co-ordinates of all gas particles in the Ref-L100N1504 EAGLE simulation will use ~80 GB of RAM.
 
-- Bulleted
-- List
+To work with EAGLE, first get yourself on _starpc_ or _external1/2_, open a terminal window. There are then two ways you can run code:
 
-1. Numbered
-2. List
+- The more straightforward way is to directly run code on one of the ARI's many cluster computers. These are listed [here](https://www.astro.ljmu.ac.uk/docs/knowledge-base/slurm-partitions/) - those working on HPC projects should primarily use one of `cyclops`, `phoenix`, the "four horsemen" (`war`, `famine`, `pestilence` and `death`) or `mclovin`. In a terminal on _starpc_ or _external1/2_, type `ssh -Y cyclops` or similar, type in your password, and you'll be ready to run code on that machine.
 
-**Bold** and _Italic_ and `Code` text
+- The alternative method is to use the SLURM resource manager, which will submit your code to a machine with computing resources available. For information on this, see the ARI docs [here](https://www.astro.ljmu.ac.uk/docs/knowledge-base/slurm-introduction-2/).
 
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/j-davies-ari/eagle-guide/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
