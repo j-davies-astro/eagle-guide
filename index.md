@@ -31,3 +31,42 @@ To work with EAGLE, first get yourself on _starpc_ or _external1/2_, open a term
 
 - The alternative method is to use the SLURM resource manager, which will submit your code to a machine with computing resources available. For information on this, see the ARI docs [here](https://www.astro.ljmu.ac.uk/docs/knowledge-base/slurm-introduction-2/).
 
+
+## Installing software
+
+Let's install two key bits of software for working with EAGLE. The first is essential, and the second is strongly recommended.
+
+### Python read routines
+
+First, we'll want to install the [pyread_eagle](https://github.com/kyleaoman/pyread_eagle) python package. To do this, you'll want to create a folder somewhere for storing software/modules. Let's create one in our home directory and enter it:
+```
+cd ~
+mkdir software
+cd software
+```
+Now, clone the `pyread_eagle` git repository here by pasting the following into your terminal:
+```
+git clone https://github.com/kyleaoman/pyread_eagle.git
+```
+You should now have a directory named `pyread_eagle`. `cd` into it and type
+```
+pip install --user -e .
+```
+to install the package into your `$PYTHONPATH` via symlink (this means that when you update your copy of the repository, the installed version of the module also updates). Check that the module installed by importing it into python:
+```
+python3.6
+import pyread_eagle
+```
+
+This module is Kyle Oman's pure-python port of `read_eagle`, by John Helly. The original module is written in C, with a wrapper for use in Python. `pyread_eagle` is, in Kyle's words, between "roughly 2x faster and 5x slower than the C version" depending on what you're loading in. The disadvantage with `read_eagle`, however, is that it's very difficult to install on the ARI systems; you need to have HDF5 configured and installed in a specific way and your installations of Python, HDF5 and the module must have been compiled with the same compilers. You can find `read_eagle` [here](https://github.com/jchelly/read_eagle), but I don't recommend trying it at the ARI - I made it work at the start of my PhD but have been unable to replicate that success for others since!
+
+### GUI for examining .hdf5 files
+
+HDFView
+
+
+
+
+
+
+
