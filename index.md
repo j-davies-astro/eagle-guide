@@ -1,6 +1,6 @@
 ## Introduction
 
-With this brief guide, I hope to get you up and running with the EAGLE simulation data at the Astrophysics Research Institute. I'll explain how to install useful python modules for reading simulation data, how to use them to extract information about dark matter haloes, galaxies and simulated particles, and give examples of some basic data reduction and analysis you'll likely need to do when working with EAGLE. This guide is aimed at new Masters and PhD students.
+With this brief guide, I hope to get you up and running with the EAGLE simulation data at the Astrophysics Research Institute. I'll explain how to install useful python modules for reading simulation data, how to use them to extract information about dark matter haloes, galaxies and simulated particles, and give examples of some basic data reduction and analysis you'll likely need to do when working with EAGLE. This guide is aimed at new Masters and PhD students - I'll try my best to explain everything in plain English and with as little jargon as possible!
 
 ### Prerequisites
 
@@ -47,7 +47,7 @@ Now, clone the `pyread_eagle` git repository here by pasting the following into 
 ```
 git clone https://github.com/kyleaoman/pyread_eagle.git
 ```
-You should now have a directory named `pyread_eagle`. Now we can enter it and install the module:
+You should now have a directory named `pyread_eagle` - this is your copy of the git repository. Now we can enter it and install the module:
 ```
 cd pyread_eagle
 pip3.5 install --user -e .
@@ -72,7 +72,7 @@ It's a bit cumbersome to dig into that HDFView folder every time you want to run
 
 Open up your `.cshrc` file in the `gedit` text editor by typing `gedit ~/.cshrc &`. The `&` here allows you to open the editor, but still use your terminal. You can add any terminal commands you'd like to run on startup here. For example, to speed up running python code I like to add this alias:
 ```
-alias py "python3"
+alias py "python3.6"
 ```
 Now I can simply type `py` rather than `python3.6` to run python code. This is a very lazy example - aliases are mainly useful for shortening much longer commands, such as:
 ```
@@ -83,8 +83,21 @@ This allows me to run HDFView by simply typing `hdfview`, rather than by typing 
 Once you're done entering aliases, save your `.cshrc` file, type `source ~/.cshrc` into your terminal to rerun the script, and your new aliases should work.
 
 
+## Getting to grips with the EAGLE data
 
+In this section we'll start exploring the simulation data. I'll explain the format the data is stored in, go over the units system and introduce you to the galaxy catalogues.
 
+### The directory structure
+
+At the ARI, we have many different simulations run with the EAGLE model saved to disk - they're stored on disk in a systematic fashion based on the simulation volume, resolution and model variation. We'll start exploring the data by opening up HDFView and clicking the 'Open' button at the top-left. Then: 
+
+- Navigate to the EAGLE simulations, which can be found at `/hpcdata0/simulations/EAGLE/`
+
+- Here, among a few other folders, you'll find some folders with names `LxxxxNxxxx`. These identifiers specify the co-moving simulation 'box size' (e.g. L0100 is the flagship volume with 100 cMpc on a side), and the number of particles in the 'box' which is defined by the number along one edge (e.g. the flagship volume, N1504, contains 1504^3 dark matter particles and, initially, 1504^3 gas particles). These numbers are set by the initial conditions of the simulation. For simulations of the same **resolution**, these numbers scale as you would expect:
+
+  - `L0100N1504`, `L0050N0752`, `L0025N0376` and `L0012N0188` all have the same, standard, EAGLE resolution
+  - `L0025N0752` and `L0034N1034` are examples of high-resolution simulations
+  - **N.B.** since EAGLE uses smoothed-particle hydrodynamics (SPH), which is a Lagrangian scheme, the resolution of the simulation is determined by the _masses_ of the simulated particles.
 
 
 
