@@ -1,6 +1,6 @@
 ## Introduction
 
-With this brief guide, I hope to get you up and running with the EAGLE simulation data at the Astrophysics Research Institute. I'll explain how to install useful python modules for reading simulation data, how to use them to extract information about dark matter haloes, galaxies and simulated particles, and give examples of some basic data reduction and analysis you'll likely need to do when working with EAGLE. 
+With this brief guide, I hope to get you up and running with the EAGLE simulation data at the Astrophysics Research Institute. I'll explain how to install useful python modules for reading simulation data, how to use them to extract information about dark matter haloes, galaxies and simulated particles, and give examples of some basic data reduction and analysis you'll likely need to do when working with EAGLE. This guide is aimed at new Masters and PhD students.
 
 ### Prerequisites
 
@@ -10,8 +10,7 @@ With this brief guide, I hope to get you up and running with the EAGLE simulatio
 
   - **Command line:** Type `ssh <your_username>@external2.astro.ljmu.ac.uk>` and type in your password when prompted. Unfortunately, X11 forwarding is blocked, so you won't be able to use any graphical interfaces through this method. A better method is to use...
   - **NoMachine:** You can access a full Linux environment remotely using NoMachine. Please see [the ARI Docs pages](https://www.astro.ljmu.ac.uk/docs/) for information on how to set this up.
-  
-  
+
 - All code will be run from a Linux terminal/command line. By default, the ARI systems use `csh`. I recommend you get familiar with some basic Linux commands if you aren't already - commands like `cd`, `ls`, `top`, `grep`, `more` and `tail` will be invaluable to you.
 
 - This guide is for working with EAGLE in Python 3, and will primarily make use of the standard packages `numpy`, `matplotlib`, and `h5py`. The Python environment and these packages should already be set up for you on the ARI systems. Other very useful packages include:
@@ -34,7 +33,7 @@ To work with EAGLE, first get yourself on _starpc_ or _external1/2_, open a term
 
 ## Installing software
 
-Let's install two key bits of software for working with EAGLE. The first is essential, and the second is strongly recommended.
+Let's install two key bits of software for working with EAGLE.
 
 ### Python read routines
 
@@ -61,9 +60,32 @@ import pyread_eagle
 
 This module is Kyle Oman's pure-python port of `read_eagle`, by John Helly. The original module is written in C, with a wrapper for use in Python. `pyread_eagle` is, in Kyle's words, between "roughly 2x faster and 5x slower than the C version" depending on what you're loading in. The disadvantage with `read_eagle`, however, is that it's very difficult to install on the ARI systems; you need to have HDF5 configured and installed in a specific way and your installations of Python, HDF5 and the module must have been compiled with the same compilers. You can find `read_eagle` [here](https://github.com/jchelly/read_eagle), but I don't recommend trying it at the ARI - I made it work at the start of my PhD but have been unable to replicate that success for others since!
 
-### GUI for examining .hdf5 files
+### GUI for examining HDF5 files
 
-HDFView
+EAGLE simulation data is stored in the [HDF5](https://www.hdfgroup.org/solutions/hdf5/) file format, which allows for fast I/O and storage of very large datasets. These files act more like Python dictionaries than simple text files, and so it's a little more difficult to have a direct look at what's actually _in_ the files. 
+
+To make this easier, download the HDFView software, which can be found [here](https://www.hdfgroup.org/downloads/hdfview/#download), onto your space on the /home drive. Inside this package should be a file named `hdfview.sh`. Run this to open the application.
+
+### Creating aliases (command-line shortcuts)
+
+It's a bit cumbersome to dig into that HDFView folder every time you want to run HDFView. To speed up tasks on the command line, you can create 'aliases' for much longer commands. To do this, you need to add lines to your `.cshrc` file, which is a little script which runs every time you open a new Linux terminal.
+
+Open up your `.cshrc` file in the `gedit` text editor by typing `gedit ~/.cshrc &`. The `&` here allows you to open the editor, but still use your terminal. You can add any terminal commands you'd like to run on startup here. For example, to speed up running python code I like to add this alias:
+```
+alias py "python3"
+```
+Now I can simply type `py` rather than `python3.6` to run python code. This is a very lazy example - aliases are mainly useful for shortening much longer commands, such as:
+```
+alias hdfview "/home/<my-username>/HDFView-3.1.0-Linux/HDFView/3.1.0/hdfview.sh"
+```
+This allows me to run HDFView by simply typing `hdfview`, rather than by typing out the whole directory structure to get to the script. By now, I'm sure you've worked out the syntax - you simply type `alias <shortcut> "<full command>"`.
+
+Once you're done entering aliases, save your `.cshrc` file, type `source ~/.cshrc` into your terminal to rerun the script, and your new aliases should work.
+
+
+
+
+
 
 
 
