@@ -92,31 +92,31 @@ In this section we'll start exploring the simulation data. I'll explain the form
 
 At the ARI, we have many different simulations run with the EAGLE model saved to disk - they're stored on disk in a systematic fashion based on the simulation volume, resolution and model variation. We'll start exploring the data by opening up HDFView and clicking the 'Open' button at the top-left. Then: 
 
-- Navigate to the EAGLE simulations, which can be found at `/hpcdata0/simulations/EAGLE/`
+Navigate to the EAGLE simulations, which can be found at `/hpcdata0/simulations/EAGLE/`
 
-- Here, among a few other folders, you'll find some folders with names `LxxxxNxxxx`. These identifiers specify the co-moving simulation 'box size' (e.g. L0100 is the flagship volume with 100 cMpc on a side), and the number of particles in the 'box' which is defined by the number along one edge (e.g. the flagship volume, N1504, contains 1504^3 dark matter particles and, initially, 1504^3 gas particles). These numbers are set by the **initial conditions** of the simulation. For simulations of the same resolution, these numbers scale as you would expect:
+Here, among a few other folders, you'll find some folders with names `LxxxxNxxxx`. These identifiers specify the co-moving simulation 'box size' (e.g. L0100 is the flagship volume with 100 cMpc on a side), and the number of particles in the 'box' which is defined by the number along one edge (e.g. the flagship volume, N1504, contains 1504^3 dark matter particles and, initially, 1504^3 gas particles). These numbers are set by the **initial conditions** of the simulation. For simulations of the same resolution, these numbers scale as you would expect:
 
-  - `L0100N1504`, `L0050N0752`, `L0025N0376` and `L0012N0188` all have the same, standard, EAGLE resolution
-  - `L0025N0752` and `L0034N1034` are examples of high-resolution simulations
-  - **N.B.** Since EAGLE uses smoothed-particle hydrodynamics (SPH), which is a Lagrangian scheme, the resolution of the simulation is in fact determined by the _masses_ of the simulated particles. See Schaye et al. (2015) for more info on this.
+- `L0100N1504`, `L0050N0752`, `L0025N0376` and `L0012N0188` all have the same, standard, EAGLE resolution
+- `L0025N0752` and `L0034N1034` are examples of high-resolution simulations
+- **N.B.** Since EAGLE uses smoothed-particle hydrodynamics (SPH), which is a Lagrangian scheme, the resolution of the simulation is in fact determined by the _masses_ of the simulated particles. See Schaye et al. (2015) for more info on this.
 
-- Head into the `L0025N0376` directory. Here you'll see a whole bunch of different folders; their names describe the **model variation** used in that simulation. The standard EAGLE model is called `REFERENCE`, and we'll focus on that for now. 
+Head into the `L0025N0376` directory. Here you'll see a whole bunch of different folders; their names describe the **model variation** used in that simulation. The standard EAGLE model is called `REFERENCE`, and we'll focus on that for now. 
 
-- Head into that `REFERENCE`, and then into `data`. Here you'll see three types of folder, corresponding to the three types of output that the simulation produces. 
+Head into that `REFERENCE`, and then into `data`. Here you'll see three types of folder, corresponding to the three types of output that the simulation produces. 
 
-  - Folders starting with `snapshot_` contain the raw simulation output. These contain information on the state of every gas, dark matter, star and black hole particle in the simulation.
+- Folders starting with `snapshot_` contain the raw simulation output. These contain information on the state of every gas, dark matter, star and black hole particle in the simulation.
   
-  - Folders starting with `groups_` contain information on the structures in the simulation that are identified as 'bound', according to the SUBFIND structure finder. I'll sometimes refer to these as "the catalogues" - more about this later.
+- Folders starting with `groups_` contain information on the structures in the simulation that are identified as 'bound', according to the SUBFIND structure finder. I'll sometimes refer to these as "the catalogues" - more about this later.
   
-  - Folders starting with `particledata_` contain similar 'raw' data to the `snapshot_` folders, but only for particles that are identified as bound to those structures mentioned above. These files contain additional info that only means anything in relation to the structure the particle is bound to.
+- Folders starting with `particledata_` contain similar 'raw' data to the `snapshot_` folders, but only for particles that are identified as bound to those structures mentioned above. These files contain additional info that only means anything in relation to the structure the particle is bound to.
  
-  The remainder of the folder names specify which **snapshot** output is in the folder. The simulation is 'dumped' to file 29 times over the course of its evolution, starting at redshift _z=20_ and ending at _z=0_. The first number specifies the snapshot number, with `000` being the first output and `028` being the last. The somewhat cryptic remainder of the folder name specifies the redshift of the snapshot - for example, `_z001p004` means _z=1.004_.
+The remainder of the folder names specify which **snapshot** output is in the folder. The simulation is 'dumped' to file 29 times over the course of its evolution, starting at redshift _z=20_ and ending at _z=0_. The first number specifies the snapshot number, with `000` being the first output and `028` being the last. The somewhat cryptic remainder of the folder name specifies the redshift of the snapshot - for example, `_z001p004` means _z=1.004_.
 
-  Some simulations will also show "snipshot" outputs here. The simulations only dump 29 full outputs because of the immense amount of storage space required, however reduced outputs, called snipshots, can also be dumped out roughly 400 times. These contain only the 'bare essentials' such as the positions, velocities and densities of particles.
+Some simulations will also show "snipshot" outputs here. The simulations only dump 29 full outputs because of the immense amount of storage space required, however reduced outputs, called snipshots, can also be dumped out roughly 400 times. These contain only the 'bare essentials' such as the positions, velocities and densities of particles.
 
-- Let's take a look at the full output at _z=1_ and open up the `snapshot_019_z001p004` folder. Note that this isn't _exactly_ redshift 1 - the outputs are generated when it's 'convenient' for the simulation to do so. For all intents and purposes, it's _z=1_.
+Let's take a look at the full output at _z=1_ and open up the `snapshot_019_z001p004` folder. Note that this isn't _exactly_ redshift 1 - the outputs are generated when it's 'convenient' for the simulation to do so. For all intents and purposes, it's _z=1_.
 
-  In here, there are several `.hdf5` files with essentially the same name, just with a different number at the end. These are simulation `chunks`, which split the box up, and if we wanted to work with all the particles in Python, we'd need to load them all. Thankfully, `pyread_eagle` takes care of this for us, so you don't need to worry.
+In here, there are several `.hdf5` files with essentially the same name, just with a different number at the end. These are simulation `chunks`, which split the box up, and if we wanted to work with all the particles in Python, we'd need to load them all. Thankfully, `pyread_eagle` takes care of this for us, so you don't need to worry.
   
 
 ## What's in a snapshot?
