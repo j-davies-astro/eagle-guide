@@ -116,10 +116,32 @@ Some simulations will also show "snipshot" outputs here. The simulations only du
 
 Let's take a look at the full output at _z=1_ and open up the `snapshot_019_z001p004` folder. Note that this isn't _exactly_ redshift 1 - the outputs are generated when it's 'convenient' for the simulation to do so. For all intents and purposes, it's _z=1_.
 
-In here, there are several `.hdf5` files with essentially the same name, just with a different number at the end. These are simulation `chunks`, which split the box up, and if we wanted to work with all the particles in Python, we'd need to load them all. Thankfully, `pyread_eagle` takes care of this for us, so you don't need to worry.
+In here, there are several `.hdf5` files with essentially the same name, just with a different number at the end. These are simulation `chunks`, which split the box up, and if we wanted to work with all the particles in Python, we'd need to load them all. The simulation is split into chunks, however, so that you _don't_ need to read in the whole simulation if you're only interested in a small spatial region. This is usually the case - most of the time you'll only be interested in a single galaxy or dark matter halo. I'll discuss this more in a later section. Thankfully, `pyread_eagle` takes care of this for us, so you don't need to worry.
   
+### Simulation snapshots
 
-### What's in a snapshot?
+Let's take a look at what's in a snapshot - open any of the `.hdf5` files that we just got to. You'll now see what looks like a file browser on the left, which we can use to navigate the contents of the file. HDF5 files are made up of _datasets_, which can be organised into _groups_. The most important part of the snapshot files are the groups entitled `PartType[0-5]`, which contain the particle data, and the `Header` and `Units` datasets.
+
+Clicking the arrows next to any of the `PartType[0-5]` groups will reveal a drop-down menu of all the different datasets available for that particle type. Several datasets are very general and apply to all particles in the simulation, such as the particle positions (`Co-ordinates`), velocities (`Velocity`) and unique identifiers (`ParticleIDs`), which are unchanging throughout the simulation and can be used to trace particles between snapshots. Each particle type then has its own set of properties (datasets):
+
+- `PartType0` are gas particles. There are initially as many gas particles as dark matter particles, however they reduce in number over time as they are converted into stars. A myriad of gas properties are tracked in the simulation, such as density, temperature, internal energy, chemical enrichment and star formation activity.
+
+- `PartType1` are dark matter (DM) particles. By contrast to gas particles, DM particles have very few properties, as they interact through gravity only. The number of DM particles is unchanging, and they all have identical masses that do not change - for this reason, their masses are not stored (it would be a waste of disk space!). The DM particle mass can be found in the Header (more on this later).
+
+- `PartType2/3` are not used in the EAGLE simulation suite. They are a component of the GADGET simulation code which represent 'boundary particles', which are used for performing cosmological 'zoom' simulations. The simulations we're interested in are 'periodic' (more on this later), so these particles aren't needed.
+
+- `PartType4` are star particles. Gas particles can stochastically convert to star particles when their star formation rates are non-zero, and they do this at a rate set by the empirical Kennicutt-Schmidt relation - for an explanation of this, see the EAGLE release papers and [Schaye & Dalla Vecchia (2008)](https://academic.oup.com/mnras/article/383/3/1210/1037943). They inject feedback energy associated with their formation into the surrounding gas, after a short delay. Many useful properties, such as metallicity, initial mass and formation time are stored for star particles.
+
+- `PartType5` are black holes, which form at the centres of dark matter haloes when they reach a certain mass. Black hole particles can accrete mass from their neighbouring gas particles and grow, injecting AGN feedback energy into their surroundings. Several quantities related to this accretion and feedback process are tracked for black hole particles.
+
+Double-clicking on any dataset will show you an Excel-like view of the data in that dataset. This isn't too informative when looking at raw particle data, but when you create your own hdf5 files, the ability to examine your results for a quick 'sanity check' is invaluable.
+
+When you've clicked on a dataset in HDFView, you should be able to see a list of _attributes_ in the main window. For most particle properties, these should be `CGSConversionFactor`, `VarDescription`, `aexp-scale-exponent` and `h-scale-exponent`. These attributes are essentially metadata for the selected dataset - as I will explain in the next section, they are invaluable!
+
+The `Header` in the snapshot file contains several useful attributes that describe the current snapshot, such as the current redshift, time, expansion factor, and other useful quantities such as the density parameters in baryons, matter and vacuum energy. We'll be using these later!
+
+For further information on the datasets in the particle data, take a look at the [document that accompanied the public release of the EAGLE particle data](https://arxiv.org/pdf/1706.09899.pdf).
+
 
 
 ### Unit system
@@ -128,25 +150,26 @@ In here, there are several `.hdf5` files with essentially the same name, just wi
 
 
 
+## Working with the catalogues
+
+### Loading in catalogues 
+
+### Unit conversions
+
+### Constructing samples of galaxies/subhaloes
+
 
 ## Working with particle data
 
 ### Initialising pyread_eagle
 
-### Selecting a region for loading
+### Selecting a region and loading particle quantities
 
-### Loading particle positions
-
-### Wrapping a periodic box
-
-### Unit conversions
+### Particle positions and periodic boxes
 
 
-## Working with the catalogues
 
-### Loading in catalogues 
 
-### Constructing samples of galaxies/subhaloes
 
 
 ## Examples of common EAGLE tasks
@@ -161,7 +184,9 @@ In here, there are several `.hdf5` files with essentially the same name, just wi
 
 ### Making a radial profile
 
-### Making beautiful images with py-sphviewer
+### Making pretty pictures with py-sphviewer
+
+### Tracing galaxies through time
 
 
 
