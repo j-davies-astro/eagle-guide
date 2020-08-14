@@ -92,7 +92,7 @@ In this section we'll start exploring the simulation data. I'll explain the form
 
 At the ARI, we have many different simulations run with the EAGLE model saved to disk - they're stored on disk in a systematic fashion based on the simulation volume, resolution and model variation. We'll start exploring the data by opening up HDFView and clicking the 'Open' button at the top-left. Then: 
 
-Navigate to the EAGLE simulations, which can be found at `/hpcdata0/simulations/EAGLE/`
+Navigate to the EAGLE simulations, which can be found at `/hpcdata0/simulations/EAGLE/`.
 
 Here, among a few other folders, you'll find some folders with names `LxxxxNxxxx`. These identifiers specify the co-moving simulation 'box size' (e.g. L0100 is the flagship volume with 100 cMpc on a side), and the number of particles in the 'box' which is defined by the number along one edge (e.g. the flagship volume, N1504, contains 1504^3 dark matter particles and, initially, 1504^3 gas particles). These numbers are set by the **initial conditions** of the simulation. For simulations of the same resolution, these numbers scale as you would expect:
 
@@ -119,8 +119,49 @@ Let's take a look at the full output at _z=1_ and open up the `snapshot_019_z001
 In here, there are several `.hdf5` files with essentially the same name, just with a different number at the end. These are simulation `chunks`, which split the box up, and if we wanted to work with all the particles in Python, we'd need to load them all. Thankfully, `pyread_eagle` takes care of this for us, so you don't need to worry.
   
 
-## What's in a snapshot?
+### What's in a snapshot?
 
+
+### Unit system
+
+### Group catalogues
+
+
+
+
+## Working with particle data
+
+### Initialising pyread_eagle
+
+### Selecting a region for loading
+
+### Loading particle positions
+
+### Wrapping a periodic box
+
+### Unit conversions
+
+
+## Working with the catalogues
+
+### Loading in catalogues 
+
+### Constructing samples of galaxies/subhaloes
+
+
+## Examples of common EAGLE tasks
+
+### Using the catalogues I: Stellar mass - halo mass relation
+
+### Using the catalogues II: Galaxy stellar mass function
+
+### Loading particles within a spherical aperture
+
+### Calculating a quantity for all haloes in a sample
+
+### Making a radial profile
+
+### Making beautiful images with py-sphviewer
 
 
 
