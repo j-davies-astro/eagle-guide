@@ -145,11 +145,11 @@ For further information on the datasets in the particle data, take a look at the
 
 ### Unit system
 
-The quantities in the simulation snapshots are stored in what could be termed _"comoving h-full GADGET units"_. Let's break down what this means:
+The quantities in the simulation snapshots are stored in what could be termed _"comoving h-less GADGET units"_. Let's break down what this means:
 
 - _"comoving"_: The simulation is run entirely in comoving units. That way, we have a box of fixed size, with galaxy formation happening in it. In "reality" (physical units), however, the box is expanding like a balloon. To get our results in physical units, we must therefore multiply our data by the `ExpansionFactor` (found in the `Header`), raised to some power that depends on the quantity (`aexp-scale-exponent`, found in the quantity's attributes). For example, we would multiply distances by `a`, densities by `a**-3` and masses by `a**0=1`.
 
-- _"h-full"_: It is commonplace in astronomy to sweep our ignorance of the true value of Hubble's constant under the rug and present values in terms of "little h", the dimensionless Hubble parameter, defined as `H_0 = 100 h km s^-1 Mpc^-1`. For more info, see [this paper](https://arxiv.org/pdf/1308.4150.pdf) by Darren Croton. We must also factor this out when we want results in physical units, by multiplying by h (`HubbleParam` in the `Header`) again raised to some power (`h-scale-exponent`).
+- _"h-less"_: It is commonplace in astronomy to sweep our ignorance of the true value of Hubble's constant under the rug and present values in terms of "little h", the dimensionless Hubble parameter, defined as `H_0 = 100 h km s^-1 Mpc^-1`. For more info, see [this paper](https://arxiv.org/pdf/1308.4150.pdf) by Darren Croton. We must also factor this out when we want results in physical units, by multiplying by h (`HubbleParam` in the `Header`) again raised to some power (`h-scale-exponent`).
 
 - _"GADGET units"_: As we know, galaxy formation and cosmology tends to involve very extreme numbers; large distances, high energies and temperatures and low densities are all commonplace. To keep the numbers stored in the snapshots small and easy to deal with, the GADGET simulation code employs some slightly unusual units that you'll need to get the hang of. The most important ones to remember are:
 
