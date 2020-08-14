@@ -159,6 +159,8 @@ The quantities in the simulation snapshots are stored in what could be termed _"
   
 These are usually very easy to deal with; for example, you'll typically want mass in solar masses, so you can simply multiply what you load in by 10^10. Other times, the conversion is less straightforward - `Density` is in "10^10 solar masses per cubic megaparsec", which can be a bit awkward to convert into g cm^-3. Thankfully, as I mentioned earlier, every quantity has the attribute `CGSConversionFactor` - multiply your data by this to get it in cgs (centimetres, grams and seconds) units. Astronomy is a bit stuck in the past and hasn't quite discovered the SI system yet, but the benefit of using these conversion factors is that you immediately know what units you're in. The attributes of `Units` in the snapshot files give the GADGET units in cgs, which can also be helpful.
 
+I'll give examples of how to do these conversions when we start experimenting with loading data in Python. Once you're familiar with it, it's quite straightforward to automate the unit conversion process, and you'll never need to worry about it.
+
 
 ### Group catalogues
 
