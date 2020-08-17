@@ -9,3 +9,7 @@
 ### Calculating a quantity for all haloes in a sample
 
 ### Making a radial profile
+
+### Making pretty pictures with py-sphviewer
+
+### Tracing galaxies through time
