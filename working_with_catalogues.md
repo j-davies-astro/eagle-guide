@@ -6,7 +6,7 @@ Let's have a go at loading in some data! We'll start with the catalogues, as we 
 
 If you remember, the catalogues are split across many files. To load in a dataset from them, we must load it in from each file and append it to a numpy array in a loop. Here's how I would go about loading in `Group_M_Crit200` from the `FOF` table:
 
-```
+```python
 import numpy as np
 import h5py as h5
 import sys
