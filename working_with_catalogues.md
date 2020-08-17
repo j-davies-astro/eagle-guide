@@ -33,7 +33,7 @@ file_ind = 0    # Initialise the file index
 while True:
 
     try:
-        # Use h5py to load in the file
+        # Use h5py to initialise the catalogue file
         with h5.File(subfindfile+str(file_ind)+'.hdf5', 'r') as f:
             
             # h5py lets you access the contents like a dictionary. Load in the '/FOF/Group_M_Crit200' dataset
@@ -140,7 +140,7 @@ print(M200_gadgetunits)
 print(M200_cgs)
 print(M200_sol)
 ```
-
+Since we're at redshift 1, you'll see in the output that the expansion factor `a` is about 0.5, however since we're loading in a mass, no correction was needed for expansion factor and `a_scale_exponent` was 0. We did, however, need to multiply by `h^-1` to get a physical mass.
 
 
 ### A function for easy catalogue reading
