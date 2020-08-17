@@ -80,11 +80,21 @@ I'll give examples of how to do these conversions when we start experimenting wi
 
 So far, I've been describing the simulations as simply "boxes of particles". What we're really interested in is _galaxy formation_, so how do we know where the galaxies (and their host dark matter haloes) are?
 
-While the simulation is running, particles are linked together on-the-fly by an algorithm called **Friends-of-Friends (FoF)** to form _groups_. The docs for the SWIFT simulation code describe the process nicely, which I'll paraphrase here:
+To illustrate this, let's use HDFView to explore one of the _group catalogues_ I mentioned earlier. Close the snapshot file in HDFView by clicking on the parent filename in the side browser and then clicking the second button along the toolbar at the top. Then click the 'open' button to the left of it, navigate back to the `data` folder, and head into the `groups_019_z001p004` folder, which corresponds to the snapshot we were just looking at. Here you'll see a load of folders starting with `eagle_subfind_tab_` - these are the group catalogues, which are split into chunks just like the snapshots. Open up one of these. 
 
-  _In practice, this is done by using a linking length `l` and demanding that any particle that finds another particle within a distance `l` is linked to it to form a group. A particle is linked directly to all other particles within a distance `l` (its friends) and indirectly to all particles that are linked to its friends (its friends-of-friends). This creates networks of linked particles which are called groups. The size (or length) of a group is the number of particles in that group. If a particle does not find any other particle within l then it forms its own group of size 1. For a given distribution of particles the resulting list of groups is unique and unambiguously defined._
+Galaxies and their haloes are identified in EAGLE through a combination of two algorithms: **FOF** and **SUBFIND**, and you'll see two HDF5 groups labelled as such in the side browser.
+
+#### FOF
+
+ While the simulation is running, dark matter particles are linked together on-the-fly by an algorithm called **Friends-of-Friends (FOF)** to form _groups_. The docs for the SWIFT simulation code describe the process nicely, which I'll paraphrase here:
+
+  _FOF is used to identify haloes in cosmological simulations by using a linking length `l` and demanding that any particle that finds another particle within a distance `l` is linked to it to form a group. A particle is linked directly to all other particles within a distance `l` (its friends) and indirectly to all particles that are linked to its friends (its friends-of-friends). This creates networks of linked particles which are called groups. The size (or length) of a group is the number of particles in that group. If a particle does not find any other particle within l then it forms its own group of size 1. For a given distribution of particles the resulting list of groups is unique and unambiguously defined._
   
-qwd
+FOF therefore used to identify dark matter haloes in the simulation, and as such, the FOF table contains halo properties such as `Group_R_Crit200` (the 'virial' radius, which bounds an overdensity equal to 200x the critical density of the universe) and `Group_M_Crit200` (the total mass within this radius). 
+
+#### SUBFIND
+
+As we know, dark matter haloes are anything but simple structures, and contain extensive substructure. A halo similar to that of our Milky Way will host a galaxy at its centre, a small number of _subhaloes_ hosting luminous 'satellite' galaxies, and many dark _subhaloes_. In a far more massive halo, such as that of a galaxy cluster, there will be a "brightest-cluster-galaxy" (BCG) at the centre, many luminous satellite galaxies, and countless more dark subhaloes. All this substructure is identified in the simulations using the **SUBFIND** algorithm.
 
 
 
