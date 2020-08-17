@@ -98,9 +98,16 @@ It's important to remember that this ordering is **NOT** preserved between snaps
 
 As we know, dark matter haloes are anything but simple structures, and contain extensive substructure. A halo similar to that of our Milky Way will likely host a galaxy at its centre, a small number of _subhaloes_ hosting luminous 'satellite' galaxies, and many dark _subhaloes_. In a far more massive halo, such as that of a galaxy cluster, there will be a "brightest-cluster-galaxy" (BCG) at the centre, many luminous satellite galaxies, and countless more dark subhaloes. All this substructure is identified in the simulations using the **SUBFIND** algorithm.
 
-SUBFIND is best explained by its inventors in [Springel et al. (2001)](https://academic.oup.com/mnras/article/328/3/726/1241140), see page 735 onwards.  
-
+SUBFIND is best explained by its inventors in [Springel et al. (2001)](https://academic.oup.com/mnras/article/328/3/726/1241140), see page 735 onwards. Essentially, SUBFIND identifies bound substructures by rebuilding the particle distribution in a FOF halo in order of decreasing density, and distinguishes these substructures from each other by identifying saddle points in the potential. Reproduced below is a very helpful figure from that paper, which illustrates nicely how SUBFIND partitions a FOF group into subhaloes:
 
 ![Image](images/springel_subfind.png)
+
+Note that I've re-labelled the panels from the original figure for consistency with the EAGLE numbering scheme. As you can see, the original FOF group contains a large central subgroup and several smaller subgroups around it. Subgroup 0, identified by SUBFIND, contains only particles bound to that **central** group, while the other bound particles are assigned to subgroups 1, 2,... etc. Some particles in the FOF group don't belong to any bound structure, and are just 'fuzz'. These numbers are designated the `SubGroupNumber` of the subgroup.
+
+Now we have a simulation containing many FOF groups, each of which has many subgroups. The `Subhalo` table in our group catalogue is therefore much longer than the `FOF` table! The `Subhalo` table is arranged by FOF `GroupNumber`, and then by SUBFIND `SubGroupNumber` to make it easy to find things.
+
+Here's a pictorial representation of this, reproduced from the IllustrisTNG documentation (IllustrisTNG organises its catalogues in the same fashion):
+
+![Image](images/tng_subfind.png)
 
 
