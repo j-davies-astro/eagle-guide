@@ -4,4 +4,6 @@
 
 ### Unit conversions
 
+### A function for easy catalogue reading
+
 ### Constructing samples of galaxies/subhaloes
