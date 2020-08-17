@@ -110,4 +110,6 @@ Here's a pictorial representation of this, reproduced from the IllustrisTNG docu
 
 ![Image](images/tng_subfind.png)
 
+The `Subhalo` table contains both the `GroupNumber` and `SubGroupNumber` of every subhalo, so you can easily find the parent halo of any subhalo in the `FOF` table. Often, you'll only be interested in the central galaxy (`SubGroupNumber` 0) in a given group, and there's a very handy field in the `FOF` table called `FirstSubhaloID` that gives the index of each group's central subhalo in the `Subhalo` table. I'll show you how to use these numbers in the examples later on.
 
+Have an explore of the `Subhalo` table - there are many useful pre-computed quantities!
