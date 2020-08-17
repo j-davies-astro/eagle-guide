@@ -90,15 +90,17 @@ Galaxies and their haloes are identified in EAGLE through a combination of two a
 
   _FOF is used to identify haloes in cosmological simulations by using a linking length `l` and demanding that any particle that finds another particle within a distance `l` is linked to it to form a group. A particle is linked directly to all other particles within a distance `l` (its friends) and indirectly to all particles that are linked to its friends (its friends-of-friends). This creates networks of linked particles which are called groups. The size (or length) of a group is the number of particles in that group. If a particle does not find any other particle within l then it forms its own group of size 1. For a given distribution of particles the resulting list of groups is unique and unambiguously defined._
   
-FOF therefore used to identify dark matter haloes in the simulation, and as such, the FOF table contains halo properties such as `Group_R_Crit200` (the 'virial' radius, which bounds an overdensity equal to 200x the critical density of the universe) and `Group_M_Crit200` (the total mass within this radius). 
+FOF therefore used to identify dark matter haloes in the simulation, and as such, the FOF table contains halo properties such as `Group_R_Crit200` (the 'virial' radius, which bounds an overdensity equal to 200x the critical density of the universe) and `Group_M_Crit200` (the total mass within this radius). The groups identified by FOF in a snapshot are in roughly descending order of M_200 in the `FOF` table, and given a `GroupNumber` based on their index in the table, starting from 1. The `GroupNumber` is not stored in the table itself, as it corresponds to the index: the first element in the table is group 1, the second group 2 etc.
+
+It's important to remember that this ordering is **NOT** preserved between snapshots, for example the structure labelled as Group 5 at _z~1_ is not guaranteed to be Group 5 at _z~0_. I'll show you how to trace objects between snapshots at the end of this guide.
 
 #### SUBFIND
 
-As we know, dark matter haloes are anything but simple structures, and contain extensive substructure. A halo similar to that of our Milky Way will host a galaxy at its centre, a small number of _subhaloes_ hosting luminous 'satellite' galaxies, and many dark _subhaloes_. In a far more massive halo, such as that of a galaxy cluster, there will be a "brightest-cluster-galaxy" (BCG) at the centre, many luminous satellite galaxies, and countless more dark subhaloes. All this substructure is identified in the simulations using the **SUBFIND** algorithm.
+As we know, dark matter haloes are anything but simple structures, and contain extensive substructure. A halo similar to that of our Milky Way will likely host a galaxy at its centre, a small number of _subhaloes_ hosting luminous 'satellite' galaxies, and many dark _subhaloes_. In a far more massive halo, such as that of a galaxy cluster, there will be a "brightest-cluster-galaxy" (BCG) at the centre, many luminous satellite galaxies, and countless more dark subhaloes. All this substructure is identified in the simulations using the **SUBFIND** algorithm.
+
+SUBFIND is best explained by its inventors in [Springel et al. (2001)](https://academic.oup.com/mnras/article/328/3/726/1241140), see page 735 onwards.  
 
 
-
-
-
+![Image](images/springel_subfind.png)
 
 
