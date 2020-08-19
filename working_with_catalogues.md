@@ -246,8 +246,19 @@ print(M200_cgs)
 print(M200_sol)
 ```
 
-Put this function somewhere safe, as we'll be using it throughout the rest of this guide. If you have a directory in which you're saving and running these example scripts, create a file containing only this function (and the relevant import statements at the top) as `catalogue_reading.py`. That way, we can access it in other scripts with ```python from catalogue_reading import *```.
-
-### Aperture measurements
+Put this function somewhere safe, as we'll be using it throughout the rest of this guide. If you have a directory in which you're saving and running these example scripts, create a file containing only this function (and the relevant import statements at the top) as `catalogue_reading.py`. That way, we can access it in other scripts in the same directory with ``` from catalogue_reading import *```.
 
 ### Constructing samples of galaxies/subhaloes
+
+The primary appeal of cosmological simulations is that they allow us to study relatively large samples of galaxies in cosmologically representative volumes. You'll therefore almost always be utilising the catalogues to construct samples of haloes/galaxies that fit certain criteria, which you then explore further with the catalogues or particle data. This will often involve matching between the `FOF` and `Subhalo` tables. In this section we'll take a look at how to do this.
+
+#### Every dark matter halo
+
+#### Central galaxies of haloes in a given mass range
+
+#### Galaxies in a given stellar mass range and their host haloes
+
+
+
+
+
