@@ -282,6 +282,12 @@ groupnumbers = groupnumbers[mass_selection]
 
 print(len(groupnumbers),' satisfy mass selection')
 ```
+Here we've loaded in the halo masses of every FOF group in the snapshot, initialised what their group numbers are, and used `np.where` to mask these arrays, returning a sample of haloes where `M200` is greater than 10^11.5 solar masses. If you run this code, you'll see that of the 30161 groups in the snapshot, only 83 are more massive than this threshold; the overwhelming majority of the groups are far lower-mass. In fact, a large fraction of the groups are 'empty' and contain no subhaloes (bound structures) - this happens because FOF is a relatively simple linking algorithm, which will still assign unbound 'fuzz' particles to a group, even if that group contains only that one particle. Such systems have `NumOfSubhalos=0` in the `FOF` table.
+
+Now we have our halo sample identified in the `FOF` table, we can get the properties of its central galaxy from the `Subhalo` table:
+
+
+
 
 ### Galaxies in a given stellar mass range and their host haloes
 
