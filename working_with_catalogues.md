@@ -284,14 +284,78 @@ print(len(groupnumbers),' satisfy mass selection')
 ```
 Here we've loaded in the halo masses of every FOF group in the snapshot, initialised what their group numbers are, and used `np.where` to mask these arrays, returning a sample of haloes where `M200` is greater than 10^11.5 solar masses. If you run this code, you'll see that of the 30161 groups in the snapshot, only 83 are more massive than this threshold; the overwhelming majority of the groups are far lower-mass. In fact, a large fraction of the groups are 'empty' and contain no subhaloes (bound structures) - this happens because FOF is a relatively simple linking algorithm, which will still assign unbound 'fuzz' particles to a group, even if that group contains only that one particle. Such systems have `NumOfSubhalos=0` in the `FOF` table.
 
-Now we have our halo sample identified in the `FOF` table, we can get the properties of its central galaxy from the `Subhalo` table:
+Now we have our halo sample identified in the `FOF` table, we can get the properties of its central galaxy from the `Subhalo` table. Say we wanted the maximum circular velocity (V_max) of the central subhaloes in each group:
+```python
+# FirstSubhaloID tells us where the central galaxy of each FOF halo is in the Subhalo table
+first_subhalo = catalogue_read('FOF','FirstSubhaloID',sim=sim,model=model,tag=tag)
 
+# Load in the maximum circular velocities of all subhaloes in the snapshot (units: km/s)
+vmax = catalogue_read('Subhalo','Vmax',sim=sim,model=model,tag=tag)
 
+print(len(vmax),' subhaloes in catalogue')
 
+# Cut down the subhalo catalogue to just the centrals
+vmax = vmax[first_subhalo]
+
+# Now this array corresponds exactly to the FOF catalogue, and they have the same length
+print(len(vmax),' of them are centrals')
+
+# We can therefore apply the same mass selection 
+vmax = vmax[mass_selection]
+
+print(vmax)
+```
+When it comes to working with particles, you'll most often want to load in the `CentreOfPotential` (COP) for the central subhalo, as this is the best descriptor of "where the galaxy/halo is". It's defined as the location of the most tightly-bound particle in the subhalo. This is done in the same way as above, but here we'll combine the steps into one line:
+```python
+COP = catalogue_read('Subhalo','CentreOfPotential',sim=sim,model=model,tag=tag)[first_subhalo,:][mass_selection,:]
+
+print(COP)
+print(np.shape(COP))
+```
+Again, we've loaded the COP of all subhaloes, reduced the sample down to just centrals, then applied our mass selection. Note the indexing - COP is a shape (N,3) array, as it includes x, y and z co-ordinates. The shape of the output array is printed above - you should find that it's (83,3).
+
+I'll give further examples of how to use this technique on the "Common EAGLE tasks" page.
 
 ### Galaxies in a given stellar mass range and their host haloes
 
+What if we want to go the other way, and take galaxies of a certain stellar mass and find their host haloes? To do this, we can make use of the `GroupNumber`, stored for every subhalo.
+```python
+sim = 'L0025N0376'
+model = 'REFERENCE'
+tag = '028_z000p000'
 
+# Get the FOF group number for every subhalo
+# These will not be unique as many subhaloes will share the same parent halo
+groupnumbers = catalogue_read('Subhalo','GroupNumber',sim=sim,model=model,tag=tag)
 
+# Get the stellar masses. We do this in a spherical aperture of 30 proper kpc
+# This dataset in the Subhalo catalogue includes the mass of all particle types in a (N,6) array
+# We want stars - PartType4 - so note the indexing at the end
+# Just like M200, we multiply by 1e10 to get the answer in solar masses
+Mstar_30kpc = catalogue_read('Subhalo','ApertureMeasurements/Mass/030kpc',sim=sim,model=model,tag=tag)[:,4] * 1e10
 
+# Make a stellar mass selection using np.where
+stellar_mass_selection = np.where(Mstar_30kpc>np.power(10.,9.5))[0]
+
+# Cut down the samples
+Mstar_30kpc = Mstar_30kpc[stellar_mass_selection]
+groupnumbers = groupnumbers[stellar_mass_selection]
+
+# Load in the halo masses from the whole FOF catalogue
+M200 = catalogue_read('FOF','Group_M_Crit200',sim=sim,model=model,tag=tag) * 1e10
+
+# Remember that GroupNumber just corresponds to the position in the FOF catalogue
+# The numbers run from 1 to N, so we need to subtract 1 to get the index
+M200 = M200[groupnumbers-1]
+
+print(M200)
+print(len(M200),' galaxies satisfy this mass cut')
+```
+Note that to get the stellar mass, we could have done
+```python
+catalogue_read('Subhalo','MassType',sim=sim,model=model,tag=tag)[:,4]
+```
+instead, and obtained the mass of all stars bound to the subhalo. Here's a good explanation from the EAGLE team (specifically from [McAlpine et al. (2016)](https://arxiv.org/abs/1510.01320) for why you should use the aperture-based method instead:
+
+    _The stripping of satellite galaxies as they orbit within a halo generates a significant mass loss at large radii. The resulting diffuse light (and any diffuse star formation) is extremely difficult to observe and is not commonly included in observational galaxy catalogues. Furthermore, the total galaxy stellar masses and star formation rates can depend  strongly  on the  precise  assignment  of  particles  to  the  main subhalo within each FOF group by the SUBFIND algorithm, which can lead to spurious total mass evolution. For these reasons, studies published by the EAGLE team use aperture masses and star formation rates, typically in an aperture of 30 pkpc.  As discussed by Schaye et al. (2015), this corresponds roughly to an R_80 Petrosian aperture and is hence particularly well-suited to comparison with observations. We recommend the use of aperture values when available._
 
