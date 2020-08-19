@@ -363,7 +363,7 @@ print(len(M200),' galaxies satisfy this mass cut')
 ```
 As you can see, we can simply use the `GroupNumber` from the `Subhalo` table to index the `FOF` table and find the parent haloes.
 
-**A very common mistake is to forget that `GroupNumber` runs from 1 to N, and not from 0 to N-1. When using `GroupNumber` as an _index_ for the `FOF` table, you must remember to subtract 1 from it as above.**
+**A very common mistake is to forget that `GroupNumber` runs from 1 to N, and not from 0 to N-1. When using `GroupNumber` as an _index_ for the `FOF` table, you must remember to subtract 1 from it as above. You only need to get your index wrong by 1 to completely screw up your results!**
 
 Note that to get the stellar mass, we could have done
 ```python
