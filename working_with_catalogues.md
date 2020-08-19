@@ -363,6 +363,8 @@ print(len(M200),' galaxies satisfy this mass cut')
 ```
 As you can see, we can simply use the `GroupNumber` from the `Subhalo` table to index the `FOF` table and find the parent haloes.
 
+**A very common mistake is to forget that `GroupNumber` runs from 1 to N, and not from 0 to N-1. When using `GroupNumber` as an _index_ for the `FOF` table, you must remember to subtract 1 from it as above.**
+
 Note that to get the stellar mass, we could have done
 ```python
 catalogue_read('Subhalo','MassType',sim=sim,model=model,tag=tag)[:,4]
@@ -370,7 +372,5 @@ catalogue_read('Subhalo','MassType',sim=sim,model=model,tag=tag)[:,4]
 instead, and obtained the mass of all stars bound to the subhalo. Here's a good explanation from the EAGLE team (specifically from [McAlpine et al. (2016)](https://arxiv.org/abs/1510.01320) for why you should use the aperture-based method instead:
 
 _The stripping of satellite galaxies as they orbit within a halo generates a significant mass loss at large radii. The resulting diffuse light (and any diffuse star formation) is extremely difficult to observe and is not commonly included in observational galaxy catalogues. Furthermore, the total galaxy stellar masses and star formation rates can depend  strongly  on the  precise  assignment  of  particles  to  the  main subhalo within each FOF group by the SUBFIND algorithm, which can lead to spurious total mass evolution. For these reasons, studies published by the EAGLE team use aperture masses and star formation rates, typically in an aperture of 30 pkpc.  As discussed by Schaye et al. (2015), this corresponds roughly to an R_80 Petrosian aperture and is hence particularly well-suited to comparison with observations. We recommend the use of aperture values when available._
-
-A very common mistake is to forget that `GroupNumber` runs from 1 to N, and **not** from 0 to N-1. When using `GroupNumber` as an _index_ for the `FOF` table, you must remember to subtract 1 from it as above.
 
 I'll give further examples of how to use these techniques on the "Common EAGLE tasks" page. For now, let's move on to working with particles!
