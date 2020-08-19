@@ -250,11 +250,38 @@ Put this function somewhere safe, as we'll be using it throughout the rest of th
 
 ## Constructing samples of galaxies/subhaloes
 
-The primary appeal of cosmological simulations is that they allow us to study relatively large samples of galaxies in cosmologically representative volumes. You'll therefore almost always be utilising the catalogues to construct samples of haloes/galaxies that fit certain criteria, which you then explore further with the catalogues or particle data. This will often involve matching between the `FOF` and `Subhalo` tables. In this section we'll take a look at how to do this.
-
-### Every dark matter halo
+The primary appeal of cosmological simulations is that they allow us to study relatively large samples of galaxies in cosmologically representative volumes. You'll therefore almost always be utilising the catalogues to construct samples of haloes/galaxies that fit certain criteria, which you then explore further with the catalogues or particle data. This will often involve matching between the `FOF` and `Subhalo` tables. In this section we'll look at a couple of examples of how to do this.
 
 ### Central galaxies of haloes in a given mass range
+
+Often, you'll likely want to take haloes within a certain mass range and investigate the properties of their central galaxies. To perform a "mass cut" in the catalogues, you can do something like this:
+
+```python
+import numpy as np
+from catalogue_reading import *
+
+# Let's stick with the z=0 Ref-L0025N0376 snapshot
+sim = 'L0025N0376'
+model = 'REFERENCE'
+tag = '028_z000p000'
+
+# Load in the halo masses from the FOF catalogue
+M200 = catalogue_read('FOF','Group_M_Crit200',sim=sim,model=model,tag=tag) * 1e10
+
+# The group numbers are simply an ascending sequence from 1 to N_groups
+groupnumbers = np.arange(len(M200)+1)
+
+print(len(M200),' haloes in catalogue')
+print(M200)
+print(groupnumbers)
+
+mass_selection = np.where(M200>np.power(10.,11.5))[0]
+
+M200 = M200[mass_selection]
+groupnumbers = groupnumbers[mass_selection]    
+
+print(len(groupnumbers),' satisfy mass selection')
+```
 
 ### Galaxies in a given stellar mass range and their host haloes
 
