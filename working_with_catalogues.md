@@ -1,8 +1,8 @@
-## Working with the catalogues
+# Working with the catalogues
 
 Let's have a go at loading in some data! We'll start with the catalogues, as we don't need `pyread_eagle` to load these in - just the python module `h5py`.
 
-### Loading in catalogues
+## Loading in catalogues
 
 If you remember, the catalogues are split across many files. To load in a dataset from them, we must load it in from each file and append it to a numpy array in a loop. Here's how I would go about loading in `Group_M_Crit200` from the `FOF` table:
 
@@ -72,7 +72,7 @@ A couple of notes:
 - You need to do that step of converting the loaded data into a numpy array. `data` here is an HDF5 object, which can be sliced and indexed, but can't be fully manipulated as a regular numpy array.
 
 
-### Unit conversions
+## Unit conversions
 
 If you successfully ran the code above, you'll notice that the data we loaded doesn't look like it corresponds to halo mass. We need to convert the units - right now we're in h-less comoving GADGET units. Conveniently, all the conversion factors we need can be loaded as attributes from our hdf5 file, as I discussed in the previous section. Lets modify the above example so it does unit corrections automatically:
 
@@ -142,7 +142,7 @@ print(M200_sol)
 ```
 Since we're at redshift 1, you'll see in the output that the expansion factor `a` is about 0.5, however since we're loading in a mass, no correction was needed for expansion factor and `a_scale_exponent` was 0. We did, however, need to multiply by `h^-1` to get a physical mass.
 
-### A function for easy catalogue reading
+## A function for easy catalogue reading
 
 Clearly, it would be a total pain to do all the above every time we wanted to load something from the catalogues. Since all the appropriate conversion factors can be easily obtained, however, it's dead easy to wrap this up in a function that automates the process. It would look something like this:
 
@@ -248,15 +248,15 @@ print(M200_sol)
 
 Put this function somewhere safe, as we'll be using it throughout the rest of this guide. If you have a directory in which you're saving and running these example scripts, create a file containing only this function (and the relevant import statements at the top) as `catalogue_reading.py`. That way, we can access it in other scripts in the same directory with ``` from catalogue_reading import *```.
 
-### Constructing samples of galaxies/subhaloes
+## Constructing samples of galaxies/subhaloes
 
 The primary appeal of cosmological simulations is that they allow us to study relatively large samples of galaxies in cosmologically representative volumes. You'll therefore almost always be utilising the catalogues to construct samples of haloes/galaxies that fit certain criteria, which you then explore further with the catalogues or particle data. This will often involve matching between the `FOF` and `Subhalo` tables. In this section we'll take a look at how to do this.
 
-#### Every dark matter halo
+### Every dark matter halo
 
-#### Central galaxies of haloes in a given mass range
+### Central galaxies of haloes in a given mass range
 
-#### Galaxies in a given stellar mass range and their host haloes
+### Galaxies in a given stellar mass range and their host haloes
 
 
 
