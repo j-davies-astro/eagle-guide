@@ -246,6 +246,7 @@ print(M200_cgs)
 print(M200_sol)
 ```
 
+Put this function somewhere safe, as we'll be using it throughout the rest of this guide. If you have a directory in which you're saving and running these example scripts, create a file containing only this function (and the relevant import statements at the top) as `catalogue_reading.py`. That way, we can access it in other scripts with ```python from catalogue_reading import *```.
 
 ### Aperture measurements
 
