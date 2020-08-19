@@ -305,6 +305,18 @@ vmax = vmax[mass_selection]
 
 print(vmax)
 ```
+Alternatively, we could look for every subhalo with a `SubGroupNumber` of 0 to find all the centrals:
+```python
+subgroupnumbers = catalogue_read('Subhalo','SubGroupNumber',sim=sim,model=model,tag=tag)
+
+central = np.where(subgroupnumber==0)[0]
+
+vmax = catalogue_read('Subhalo','Vmax',sim=sim,model=model,tag=tag)[central][mass_selection]
+
+print(vmax)
+```
+would be equivalent. However, this requires an extra `np.where` operation, which can be rather slow, so it's best to use the `FirstSubhaloID`.
+
 When it comes to working with particles, you'll most often want to load in the `CentreOfPotential` (COP) for the central subhalo, as this is the best descriptor of "where the galaxy/halo is". It's defined as the location of the most tightly-bound particle in the subhalo. This is done in the same way as above, but here we'll combine the steps into one line:
 ```python
 COP = catalogue_read('Subhalo','CentreOfPotential',sim=sim,model=model,tag=tag)[first_subhalo,:][mass_selection,:]
@@ -313,8 +325,6 @@ print(COP)
 print(np.shape(COP))
 ```
 Again, we've loaded the COP of all subhaloes, reduced the sample down to just centrals, then applied our mass selection. Note the indexing - COP is a shape (N,3) array, as it includes x, y and z co-ordinates. The shape of the output array is printed above - you should find that it's (83,3).
-
-I'll give further examples of how to use this technique on the "Common EAGLE tasks" page.
 
 ### Galaxies in a given stellar mass range and their host haloes
 
@@ -351,6 +361,8 @@ M200 = M200[groupnumbers-1]
 print(M200)
 print(len(M200),' galaxies satisfy this mass cut')
 ```
+As you can see, we can simply use the `GroupNumber` from the `Subhalo` table to index the `FOF` table and find the parent haloes.
+
 Note that to get the stellar mass, we could have done
 ```python
 catalogue_read('Subhalo','MassType',sim=sim,model=model,tag=tag)[:,4]
@@ -359,3 +371,6 @@ instead, and obtained the mass of all stars bound to the subhalo. Here's a good 
 
 _The stripping of satellite galaxies as they orbit within a halo generates a significant mass loss at large radii. The resulting diffuse light (and any diffuse star formation) is extremely difficult to observe and is not commonly included in observational galaxy catalogues. Furthermore, the total galaxy stellar masses and star formation rates can depend  strongly  on the  precise  assignment  of  particles  to  the  main subhalo within each FOF group by the SUBFIND algorithm, which can lead to spurious total mass evolution. For these reasons, studies published by the EAGLE team use aperture masses and star formation rates, typically in an aperture of 30 pkpc.  As discussed by Schaye et al. (2015), this corresponds roughly to an R_80 Petrosian aperture and is hence particularly well-suited to comparison with observations. We recommend the use of aperture values when available._
 
+A very common mistake is to forget that `GroupNumber` runs from 1 to N, and **not** from 0 to N-1. When using `GroupNumber` as an _index_ for the `FOF` table, you must remember to subtract 1 from it as above.
+
+I'll give further examples of how to use these techniques on the "Common EAGLE tasks" page. For now, let's move on to working with particles!
