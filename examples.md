@@ -4,6 +4,8 @@
 
 ## Using the catalogues II: Galaxy stellar mass function
 
+## Loading particles within a spherical aperture around a galaxy
+
 ## Calculating a quantity using particles for all haloes in a sample
 
 ## Making a radial profile
