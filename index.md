@@ -1,8 +1,8 @@
-## Introduction
+# Introduction
 
 With this brief guide, I hope to get you up and running with the EAGLE simulation data at the Astrophysics Research Institute. I'll explain how to install useful python modules for reading simulation data, how to use them to extract information about dark matter haloes, galaxies and simulated particles, and give examples of some basic data reduction and analysis you'll likely need to do when working with EAGLE. This guide is aimed at new Masters and PhD students - I'll try my best to explain everything in plain English and with as little jargon as possible!
 
-### Prerequisites
+## Prerequisites
 
 - I'll assume that you've read the original EAGLE papers: [Schaye et al. (2015)](https://academic.oup.com/mnras/article/446/1/521/1316115) and [Crain et al. (2015)](https://academic.oup.com/mnras/article/450/2/1937/984366). They introduce the simulation nomenclature and both explain and justify the physics in the EAGLE model.
 
@@ -21,7 +21,7 @@ With this brief guide, I hope to get you up and running with the EAGLE simulatio
   - `tqdm` for showing progress bars while your code runs
 
 
-### Running your code
+## Running your code
 
 You should **not** run your code on either a _starpc_ or _external1/2_. When it comes to analysing cosmological simulations, machines like these are simply not up to the task! The EAGLE simulations follow the evolution of billions of particles and consume enormous amounts of memory when loaded in from disk - for example, simply loading the co-ordinates of all gas particles in the Ref-L100N1504 EAGLE simulation will use ~80 GB of RAM.
 
