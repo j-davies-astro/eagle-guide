@@ -191,7 +191,28 @@ plt.show()
 If you run this, you'll see that because the region straddles the edges of the box in all three dimensions, `pyread_eagle` loaded in a roughly cubic section from all corners of the box:
 ![Image](/images/periodic_prewrap.png)
 
+We can fix this by "wrapping the box". I do this by doing a co-ordinate transformation such that the centre of our region (which in this case is [25,25,25]) is at [0,0,0], and then make use of python's remainder (`%`) operator:
+```python
+# Get the simulation box size (in physical units)
+with h5.File(snapfile,'r') as f:
+    boxsize = f['Header'].attrs['BoxSize'] * a/h # Note the unit conversion!
+    
+# Centre the co-ordinates on the centre of the region
+coords -= 25.
 
+# Wrap the box
+coords += boxsize/2.
+coords %= boxsize
+coords -= boxsize/2.
+
+# Make another scatter plot
+fig, ax = plt.subplots(figsize=(16,16))
+ax.scatter(coords[:,0],coords[:,1],marker=',',c='k',s=1)
+ax.set_xlabel(r'$x\,[{\rm pMpc}]$')
+ax.set_ylabel(r'$y\,[{\rm pMpc}]$')
+plt.show()
+```
+Now, the region is contiguous and all in one place. As you can see, this is a very sparse and uninteresting (2 Mpc)^3 of space!
 
 
 
