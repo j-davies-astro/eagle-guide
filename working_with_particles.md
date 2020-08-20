@@ -214,5 +214,5 @@ plt.show()
 ```
 Now, the region is contiguous and all in one place. As you can see, this is a very sparse and uninteresting (2 Mpc)^3 of space! This technique with the remainder operator is very quick and clean (I pinched it from someone else!) - one could also use `np.where` to find the particles that need their co-ordinates shifting by the size of the box.
 
-
+**It's important to remember to do this box wrapping when working with co-ordinates. You can always check whether it's necessary for your chosen region by testing whether your bounds go outside the box!**
 
