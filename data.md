@@ -1,8 +1,8 @@
-## Getting to grips with the EAGLE data
+# Getting to grips with the EAGLE data
 
 In this section we'll start exploring the simulation data. I'll explain the format the data is stored in, go over the units system and introduce you to the galaxy catalogues.
 
-### The directory structure
+## The directory structure
 
 At the ARI, we have many different simulations run with the EAGLE model saved to disk - they're stored on disk in a systematic fashion based on the simulation volume, resolution and model variation. We'll start exploring the data by opening up HDFView and clicking the 'Open' button at the top-left. Then: 
 
@@ -32,7 +32,7 @@ Let's take a look at the full output at _z=1_ and open up the `snapshot_019_z001
 
 In here, there are several `.hdf5` files with essentially the same name, just with a different number at the end. These are simulation `chunks`, which split the box up, and if we wanted to work with all the particles in Python, we'd need to load them all. The simulation is split into chunks, however, so that you _don't_ need to read in the whole simulation if you're only interested in a small spatial region. This is usually the case - most of the time you'll only be interested in a single galaxy or dark matter halo. I'll discuss this more in a later section. Thankfully, `pyread_eagle` takes care of this for us, so you don't need to worry.
   
-### Simulation snapshots
+## Simulation snapshots
 
 Let's take a look at what's in a snapshot - open any of the `.hdf5` files that we just got to. You'll now see what looks like a file browser on the left, which we can use to navigate the contents of the file. HDF5 files are made up of _datasets_, which can be organised into _groups_. The most important part of the snapshot files are the groups entitled `PartType[0-5]`, which contain the particle data, and the `Header` and `Units` datasets.
 
@@ -57,7 +57,7 @@ The `Header` in the snapshot file contains several useful attributes that descri
 For further information on the datasets in the particle data, take a look at the [document that accompanied the public release of the EAGLE particle data](https://arxiv.org/pdf/1706.09899.pdf).
 
 
-### Unit system
+## Unit system
 
 The quantities in the simulation snapshots are stored in what could be termed _"comoving h-less GADGET units"_. Let's break down what this means:
 
@@ -76,7 +76,7 @@ The quantities in the simulation snapshots are stored in what could be termed _"
 I'll give examples of how to do these conversions when we start experimenting with loading data in Python. Once you're familiar with it, it's quite straightforward to automate the unit conversion process, and you'll never need to worry about it.
 
 
-### Group catalogues
+## Group catalogues
 
 So far, I've been describing the simulations as simply "boxes of particles". What we're really interested in is _galaxy formation_, so how do we know where the galaxies (and their host dark matter haloes) are?
 
@@ -84,7 +84,7 @@ To illustrate this, let's use HDFView to explore one of the _group catalogues_ I
 
 Galaxies and their haloes are identified in EAGLE through a combination of two algorithms: **FOF** and **SUBFIND**, and you'll see two HDF5 groups labelled as such in the side browser.
 
-#### FOF
+### FOF
 
  While the simulation is running, dark matter particles are linked together on-the-fly by an algorithm called **Friends-of-Friends (FOF)** to form _groups_. The docs for the SWIFT simulation code describe the process nicely, which I'll paraphrase here:
 
@@ -94,7 +94,7 @@ FOF therefore used to identify dark matter haloes in the simulation, and as such
 
 It's important to remember that this ordering is **NOT** preserved between snapshots, for example the structure labelled as Group 5 at _z~1_ is not guaranteed to be Group 5 at _z~0_. I'll show you how to trace objects between snapshots at the end of this guide.
 
-#### SUBFIND
+### SUBFIND
 
 As we know, dark matter haloes are anything but simple structures, and contain extensive substructure. A halo similar to that of our Milky Way will likely host a galaxy at its centre, a small number of _subhaloes_ hosting luminous 'satellite' galaxies, and many dark _subhaloes_. In a far more massive halo, such as that of a galaxy cluster, there will be a "brightest-cluster-galaxy" (BCG) at the centre, many luminous satellite galaxies, and countless more dark subhaloes. All this substructure is identified in the simulations using the **SUBFIND** algorithm.
 
