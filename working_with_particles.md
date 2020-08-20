@@ -128,7 +128,7 @@ def particle_read(ptype,quantity,snapshot,snapfile,
 
             return data_arr
 ```
-With this function, it's now easy to load in particle data in the region you specified with the `select_region` method:
+With this function, it's now easy to load in particle data from a region already specified with the `select_region` method:
 ```python
 # Get the masses of gas particles in solar masses
 gas_mass = particle_read(0,'Mass',snapshot,snapfile) * 1e10
@@ -139,7 +139,14 @@ Keep this function in hand, as we'll use it along with the catalogue-reading fun
 
 ## Particle positions and periodic boxes
 
+Until now I've referred to the simulations as "boxes of particles". You may then wonder: what happens at the edges of this box? If the centre of a galaxy sits right on the edge of the box, is only half of the galaxy in the simulation, and how would that even work in terms of galaxy formation??
+
+To get around this issue, cosmological simulations employ **periodic boundary conditions**. This means that the structure at one face of the box is perfectly contiguous with what's on the opposite face - one could take two copies of the simulation, place them next to each other, and the interface between them would be perfectly seamless. One could even tile the boxes infinitely and make a simulation of arbitrary size, though of course no extra information about galaxy formation would be gained by doing so.
+
+Returning to the example of a galaxy sitting right at the simulation's 'edge': while one half the galaxy sits at one end of the box, the rest of it sits at the opposite end. This has important consequences for us when we load in the co-ordinates of particles - we must "wrap the box" and move half of the galaxy over to where it's "supposed to be".
+
+`pyread_eagle` is clever, and takes the periodicity of the box into account. If you enter values into `select_region` that are outside of the bounds of the simulation, it will load in the particles that should be in that region from the opposite end of the box. We can test this using our new `particle_read` function:
 
 
 
-## Loading particles within a spherical aperture around a galaxy
+
