@@ -16,10 +16,130 @@ The cells (hash keys) are stored on disk in an order defined by a Peano-Hilbert 
 
 Recall that the snapshots are split into several hdf5 files, defining simulation 'chunks'; `pyread_eagle` uses the hash keys to identify which of these chunks need loading with `h5py`. The important thing to remember is that **the module won't just read the region you ask it to, it'll read all the chunks containing the hash keys you selected.** This means you'll get the cubic region you asked for, plus lots of extra stuff outside that region. Further masking of the data will be required to get the exact data that you want. We'll cover this below.
 
-## Initialising pyread_eagle
+## Using `pyread_eagle`
 
-## Selecting a region and loading particle quantities
+### Initialising a snapshot
+
+Fortunately for us, `pyread_eagle` is very straightforward to use. First, you'll need to import the module and make a string that points to just **one** chunk of the snapshot you want to load:
+```python
+# Import modules
+import numpy as np
+import h5py as h5
+import pyread_eagle
+
+# Simulation details
+sim = 'L0025N0376'
+model = 'REFERENCE'
+tag = '028_z000p000'
+
+snapfile = '/hpcdata0/simulations/EAGLE/' + sim + '/' + model + '/data/snapshot_'+tag+'/snap_'+tag+'.0.hdf5'
+```
+We can now use this string to initialise an `EagleSnapshot` object with `pyread_eagle`:
+```python
+snapshot = pyread_eagle.EagleSnapshot(snapfile)
+```
+Note that because `EagleSnapshot` is is a python _object_, we could in theory have multiple snapshots on the go at once, for example if we wanted to study two different models. For now, though, we'll just stick to manipulating one!
+
+### Selecting a region
+
+The `EagleSnapshot` object has several _methods_, though the important ones for us are `select_region` and `read_dataset`. The former method is where we tell the module the spatial region we want to load, and it does its magic with the hash keys. It's used like this:
+```python
+# The arguments are xmin,xmax,ymin,ymax,zmin,zmax
+snapshot.select_region(0.,1.,0.,1.,0.,1.)
+```
+In doing this, we've told `snapshot` (an _instance_ of `EagleSnapshot`) that we'd like to load from a cubic region of side length **1 cMpc/h**. Yes, you guessed it, `select` requires that the **min and max values of x, y and z that we give must be in _h_-less comoving GADGET units**. 
+
+This adds a little extra layer of complexity - you'll need to have the appropriate values of _h_ and _a_ in hand if you want to specify a region in physical units (which you will, most of the time). We can grab these from the header of `snapfile` that we specified earlier. To load in a similar cubic region, but with a side length of **1 pMpc**, we could instead do:
+```python
+with h5.File(snapfile,'r') as f:
+    h = f['Header'].attrs['HubbleParam']
+    a = f['Header'].attrs['ExpansionFactor']
+
+side_length = 1. * h/a
+
+snapshot.select_region(0.,side_length,0.,side_length,0.,side_length)
+```
+
+### Loading particle quantities
+
+Now that we've selected our region, we can load in the properties of all the particles in that region with the `read_dataset` method. There are only two arguments to worry about here - the **particle type** and the **dataset name**. For example, lets load the masses (the `Mass` dataset) of all gas particles (particle type 0):
+```python
+gas_mass = snapshot.read_dataset(0,'Mass')
+
+print(gas_mass)
+print(len(gas_mass))
+```
+These will be in **h-less comoving GADGET units**, and you can find the conversion factors as attributes of the dataset in the hdf5 file, just like for the catalogues.
+
+If you run this, you'll see that this is a rather uninteresting "chunk of universe"! There are only 154 gas particles, and they all have the same mass. We'll look at loading something more interesting in soon!
+
+## Automating unit conversions and extra complexities
+
+As we know from working with the catalogues, doing the unit conversions manually for each dataset we want to load can be a bit of a pain, so let's automate this for the particles as well.
+
+In theory, we could just look at the attributes of the dataset in question in `snapfile` to get our conversion factors. This almost always works, but for the rarer particle types (typically stars and black holes) there can sometimes be no particles of the required type in chunk 0. A workaround for this is to simply look in the next chunk!
+
+The function below takes this approach. You'll notice that it's very similar to our function for loading the catalogues, but now works with particles instead. The user must pass in the particle type `ptype`, the `quantity` of interest, our `snapshot` instance (after running `snapshot.select_region`) and `snapfile`, the path to the data.
+```python
+def particle_read(ptype,quantity,snapshot,snapfile,
+            phys_units=True,
+            cgs_units=False):
+
+        # Trim off the "0.hdf5" from our file string so we can loop over the chunks if needed
+        trimmed_snapfile = snapfile[:-6]
+        # Initialise an index
+        snapfile_ind = 0
+        while True:
+            try:
+                with h5.File(trimmed_snapfile+str(snapfile_ind)+'.hdf5', 'r') as f:
+                    # Grab all the conversion factors from the header and dataset attributes
+                    h = f['Header'].attrs['HubbleParam']
+                    a = f['Header'].attrs['ExpansionFactor']
+                    h_scale_exponent = f['/PartType%i/%s'%((ptype,quantity))].attrs['h-scale-exponent']
+                    a_scale_exponent = f['/PartType%i/%s'%((ptype,quantity))].attrs['aexp-scale-exponent']
+                    cgs_conversion_factor = f['/PartType%i/%s'%((ptype,quantity))].attrs['CGSConversionFactor']
+            except:
+                # If there are no particles of the right type in chunk 0, move to the next one
+                print('No particles of type ',ptype,' in snapfile ',snapfile_ind)
+                snapfile_ind += 1
+                continue
+            # If we got what we needed, break from the while loop
+            break
+
+        # Load in the quantity
+        data_arr = snapshot.read_dataset(ptype,quantity)
+
+        # Cast the data into a numpy array of the correct type
+        dt = data_arr.dtype
+        data_arr = np.array(data_arr,dtype=dt)
+
+        if np.issubdtype(dt,np.integer):
+            # Don't do any corrections if loading in integers
+            return data_arr
+
+        else:
+            # Do unit corrections, like we did for the catalogues
+            if phys_units:
+                data_arr *= np.power(h,h_scale_exponent) * np.power(a,a_scale_exponent)
+
+            if cgs_units:
+                data_arr = np.array(data_arr,dtype=np.float64)
+                data_arr *= cgs_conversion_factor
+
+            return data_arr
+```
+With this function, it's now easy to load in particle data in the region you specified with the `select_region` method:
+```python
+# Get the masses of gas particles in solar masses
+gas_mass = particle_read(0,'Mass',snapshot,snapfile) * 1e10
+
+print(gas_mass)
+```
+Keep this function in hand, as we'll use it along with the catalogue-reading function later on.
 
 ## Particle positions and periodic boxes
 
-## Loading particles within a spherical aperture
+
+
+
+## Loading particles within a spherical aperture around a galaxy
