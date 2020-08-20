@@ -85,48 +85,48 @@ def particle_read(ptype,quantity,snapshot,snapfile,
             phys_units=True,
             cgs_units=False):
 
-        # Trim off the "0.hdf5" from our file string so we can loop over the chunks if needed
-        trimmed_snapfile = snapfile[:-6]
-        # Initialise an index
-        snapfile_ind = 0
-        while True:
-            try:
-                with h5.File(trimmed_snapfile+str(snapfile_ind)+'.hdf5', 'r') as f:
-                    # Grab all the conversion factors from the header and dataset attributes
-                    h = f['Header'].attrs['HubbleParam']
-                    a = f['Header'].attrs['ExpansionFactor']
-                    h_scale_exponent = f['/PartType%i/%s'%((ptype,quantity))].attrs['h-scale-exponent']
-                    a_scale_exponent = f['/PartType%i/%s'%((ptype,quantity))].attrs['aexp-scale-exponent']
-                    cgs_conversion_factor = f['/PartType%i/%s'%((ptype,quantity))].attrs['CGSConversionFactor']
-            except:
-                # If there are no particles of the right type in chunk 0, move to the next one
-                print('No particles of type ',ptype,' in snapfile ',snapfile_ind)
-                snapfile_ind += 1
-                continue
-            # If we got what we needed, break from the while loop
-            break
+    # Trim off the "0.hdf5" from our file string so we can loop over the chunks if needed
+    trimmed_snapfile = snapfile[:-6]
+    # Initialise an index
+    snapfile_ind = 0
+    while True:
+        try:
+            with h5.File(trimmed_snapfile+str(snapfile_ind)+'.hdf5', 'r') as f:
+                # Grab all the conversion factors from the header and dataset attributes
+                h = f['Header'].attrs['HubbleParam']
+                a = f['Header'].attrs['ExpansionFactor']
+                h_scale_exponent = f['/PartType%i/%s'%((ptype,quantity))].attrs['h-scale-exponent']
+                a_scale_exponent = f['/PartType%i/%s'%((ptype,quantity))].attrs['aexp-scale-exponent']
+                cgs_conversion_factor = f['/PartType%i/%s'%((ptype,quantity))].attrs['CGSConversionFactor']
+        except:
+            # If there are no particles of the right type in chunk 0, move to the next one
+            print('No particles of type ',ptype,' in snapfile ',snapfile_ind)
+            snapfile_ind += 1
+            continue
+        # If we got what we needed, break from the while loop
+        break
 
-        # Load in the quantity
-        data_arr = snapshot.read_dataset(ptype,quantity)
+    # Load in the quantity
+    data_arr = snapshot.read_dataset(ptype,quantity)
 
-        # Cast the data into a numpy array of the correct type
-        dt = data_arr.dtype
-        data_arr = np.array(data_arr,dtype=dt)
+    # Cast the data into a numpy array of the correct type
+    dt = data_arr.dtype
+    data_arr = np.array(data_arr,dtype=dt)
 
-        if np.issubdtype(dt,np.integer):
-            # Don't do any corrections if loading in integers
-            return data_arr
+    if np.issubdtype(dt,np.integer):
+        # Don't do any corrections if loading in integers
+        return data_arr
 
-        else:
-            # Do unit corrections, like we did for the catalogues
-            if phys_units:
-                data_arr *= np.power(h,h_scale_exponent) * np.power(a,a_scale_exponent)
+    else:
+        # Do unit corrections, like we did for the catalogues
+        if phys_units:
+            data_arr *= np.power(h,h_scale_exponent) * np.power(a,a_scale_exponent)
 
-            if cgs_units:
-                data_arr = np.array(data_arr,dtype=np.float64)
-                data_arr *= cgs_conversion_factor
+        if cgs_units:
+            data_arr = np.array(data_arr,dtype=np.float64)
+            data_arr *= cgs_conversion_factor
 
-            return data_arr
+        return data_arr
 ```
 With this function, it's now easy to load in particle data from a region already specified with the `select_region` method:
 ```python
@@ -135,17 +135,62 @@ gas_mass = particle_read(0,'Mass',snapshot,snapfile) * 1e10
 
 print(gas_mass)
 ```
-Keep this function in hand, as we'll use it along with the catalogue-reading function later on.
+Keep this function in hand, as we'll use it along with the catalogue-reading function later on. I'm going to keep it in a file called `particle_reading.py`.
 
 ## Particle positions and periodic boxes
 
 Until now I've referred to the simulations as "boxes of particles". You may then wonder: what happens at the edges of this box? If the centre of a galaxy sits right on the edge of the box, is only half of the galaxy in the simulation, and how would that even work in terms of galaxy formation??
 
-To get around this issue, cosmological simulations employ **periodic boundary conditions**. This means that the structure at one face of the box is perfectly contiguous with what's on the opposite face - one could take two copies of the simulation, place them next to each other, and the interface between them would be perfectly seamless. One could even tile the boxes infinitely and make a simulation of arbitrary size, though of course no extra information about galaxy formation would be gained by doing so.
+To get around this issue, cosmological simulations employ **periodic boundary conditions**. This means that the structure at one face of the box is perfectly contiguous with what's on the opposite face - one could take two copies of the simulation, place them next to each other, and the interface between them would be perfectly seamless. One could even tile the boxes infinitely and make a simulation of arbitrary size, though of course no extra information about galaxy formation would be gained by doing so. All the gravitational forces, hydrodynamics and EAGLE physics work in this periodic fashion. It's more than a little mind-blowing to think about - I prefer to think of the simulation as simply not having edges, while having a finite volume.
 
 Returning to the example of a galaxy sitting right at the simulation's 'edge': while one half the galaxy sits at one end of the box, the rest of it sits at the opposite end. This has important consequences for us when we load in the co-ordinates of particles - we must "wrap the box" and move half of the galaxy over to where it's "supposed to be".
 
 `pyread_eagle` is clever, and takes the periodicity of the box into account. If you enter values into `select_region` that are outside of the bounds of the simulation, it will load in the particles that should be in that region from the opposite end of the box. We can test this using our new `particle_read` function:
+```python
+import numpy as np
+import pyread_eagle
+import matplotlib.pyplot as plt
+
+from particle_reading import *
+
+sim = 'L0025N0376'
+model = 'REFERENCE'
+tag = '028_z000p000'
+
+snapfile = '/hpcdata0/simulations/EAGLE/' + sim + '/' + model + '/data/snapshot_'+tag+'/snap_'+tag+'.0.hdf5'
+
+snapshot = pyread_eagle.EagleSnapshot(snapfile)
+
+with h5.File(snapfile,'r') as f:
+    h = f['Header'].attrs['HubbleParam']
+    a = f['Header'].attrs['ExpansionFactor']
+
+# Select a region 2 pMpc across that straddles the upper corner of the 25 Mpc box in x, y and z
+min_coord = 24. * h/a
+max_coord = 26. * h/a
+
+# Run select_region with these limits
+snapshot.select_region(min_coord,max_coord,
+                        min_coord,max_coord,
+                        min_coord,max_coord)
+
+# Use our new function to automate unit corrections
+# We'll get the coordinates in physical Mpc
+coords = particle_read(0,'Coordinates',snapshot,snapfile)
+
+# Make a scatter plot of the particles
+fig, ax = plt.subplots(figsize=(16,16))
+
+ax.scatter(coords[:,0],coords[:,1],marker=',',c='k',s=1)
+
+ax.set_xlabel(r'$x\,[{\rm pMpc}]$')
+ax.set_ylabel(r'$y\,[{\rm pMpc}]$')
+
+plt.show()
+```
+If you run this, you'll see that because the region straddles the edges of the box in all three dimensions, `pyread_eagle` loaded in a roughly cubic section from all corners of the box:
+![Image](/images/periodic_prewrap.png)
+
 
 
 
