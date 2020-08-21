@@ -187,6 +187,8 @@ This produces the following plot:
 
 This produces a good match to the Schaye+15 plot, though not an exact one as the bin sizes differ slightly. As you can see, there are very many low-mass galaxies, very few high-mass galaxies, and a characteristic 'knee' at M_* = 10^10.5-10^11 solar masses. Galaxies in this mass range dominate the present-day mass density of the Universe.
 
+The plot also gives you an idea of the _sampling_ in each simulation volume; in a nutshell, it tells you what's 'available' in each box. As you can see, the bigger the boxes probe to higher masses and rarer objects. For example, the Ref-L0100N1504 volume is the only one to host any galaxies more massive than 10^11.5 solar masses, while the Recal-L0025N0752 volume contains no galaxies above 10^11 solar masses.
+
 ## Loading particles within a spherical aperture around a galaxy
 
 ## Calculating a quantity using particles for all haloes in a sample
