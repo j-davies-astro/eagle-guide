@@ -46,6 +46,7 @@ plt.show()
 ```
 This should produce the following figure:
 ![smhm_basic](/images/smhm_basic.png)
+
 This tells you a couple of things about galaxy formation straight away:
 - In a given volume, very massive objects are rare and low-mass objects are very numerous. This is because the universe is hierarchical.
 - Galaxy formation is most efficient in haloes of M_200 ~ 10^12 solar masses, which tend to host Milky Way-like galaxies. 
@@ -82,6 +83,7 @@ plt.show()
 ```
 This produces the following plot:
 ![Image](/images/smhm_meanmedian.png)
+
 As you can see, the curves are very similar, but there are some differences in detail. The median becomes a poor representation of the data at high mass, where there are very few data points per bin. At low mass, you'll see that the mean cuts off before the median - this is because there are a few low-mass haloes containing no stars, producing `log(0)=-inf` errors that break the mean. You'll need to use your judgement to decide which of the mean or median is the appropriate statistic. 
 
 Generally, for large datasets, or for datasets with large dynamic ranges, I prefer to use the median as the mean can be very strongly weighted towards larger values. For example, see the plot in the Appendix of [this paper](https://arxiv.org/pdf/1810.07696.pdf) - the mean is at least a factor of 10 higher than the median in the top panel because X-ray luminosity has an enormous dynamic range at fixed M_200.
@@ -122,6 +124,7 @@ plt.show()
 ```
 As you can see, there are a couple of extra steps; we must make sure there are no invalid datapoints (NaNs or infs), and sort the data in order of ascending x value. We get the following:
 ![lowess](/images/smhm_lowess.png)
+
 You'll immediately notice that this method gets the answer rather wrong at high mass. This is because there are very few datapoints here and LOWESS is, in this case, still fitting to the closest 20% of datapoints, skewing the fitting. You can get around this by adjusting the fraction of the data used for fitting.
 
 ## Using the catalogues II: Galaxy stellar mass function
