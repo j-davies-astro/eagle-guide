@@ -16,7 +16,7 @@ The cells (hash keys) are stored on disk in an order defined by a Peano-Hilbert 
 
 Recall that the snapshots are split into several hdf5 files, defining simulation 'chunks'; `pyread_eagle` uses the hash keys to identify which of these chunks need loading with `h5py`. The important thing to remember is that **the module won't just read the region you ask it to, it'll read all the chunks containing the hash keys you selected.** This means you'll get the cubic region you asked for, plus lots of extra stuff outside that region. Further masking of the data will be required to get the exact data that you want. We'll cover this below.
 
-## Using `pyread_eagle`
+## Using pyread_eagle
 
 ### Initialising a snapshot
 
