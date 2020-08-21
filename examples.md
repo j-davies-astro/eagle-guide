@@ -184,6 +184,7 @@ plt.show()
 ```
 This produces the following plot:
 ![gsmf](/images/gsmf.png)
+
 This produces a good match to the Schaye+15 plot, though not an exact one as the bin sizes differ slightly. As you can see, there are very many low-mass galaxies, very few high-mass galaxies, and a characteristic 'knee' at M_* = 10^10.5-10^11 solar masses. Galaxies in this mass range dominate the present-day mass density of the Universe.
 
 ## Loading particles within a spherical aperture around a galaxy
