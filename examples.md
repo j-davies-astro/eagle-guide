@@ -313,6 +313,96 @@ Of course, this whole process can be wrapped up in a function that incorporates 
 
 ## Calculating a quantity using particles for all haloes in a sample
 
+With the above framework in hand, we can apply it to large samples of galaxies/haloes by introducing a `for` loop. A great feature of `pyread_eagle` is that you need only initialise the `EagleSnapshot` object once, then you can run `select_region` over and over to grab different chunks of the box.
+
+Here's an example of how you can compute a quantity from the particle data for each object in a sample. In the following code, we'll produce the stellar mass-halo mass relation from earlier, except that now we'll **compute the stellar masses manually from the particles themselves**. For now, we'll just look at the smaller Ref-L0025N0376 volume for speed.
+
+**N.B.** In the following code I use the `tqdm` module, which you can install on the command line with `pip3.5 install tqdm --user`. The module adds a progress bar to your `for` loops - all you need to do is wrap a `tqdm()` function call around your iterator as shown below. I can't recommend this module enough for working through large datasets!
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from catalogue_reading import *
+from particle_reading import *
+from tqdm import tqdm
+
+sim = 'L0025N0376'
+model = 'REFERENCE'
+tag = '028_z000p000'
+
+snapfile = '/hpcdata0/simulations/EAGLE/' + sim + '/' + model + '/data/snapshot_'+tag+'/snap_'+tag+'.0.hdf5'
+
+# Load what we need from the catalogues
+M200 = catalogue_read('FOF','Group_M_Crit200',sim=sim,model=model,tag=tag) * 1e10
+first_subhalo = catalogue_read('FOF','FirstSubhaloID',sim=sim,model=model,tag=tag)
+COP = catalogue_read('Subhalo','CentreOfPotential',sim=sim,model=model,tag=tag)[first_subhalo,:]
+
+# Establish our halo sample - groups with M200>10^10.5
+mass_selection = np.where(M200>np.power(10.,10.5))[0]
+M200 = M200[mass_selection]
+COP = COP[mass_selection,:]
+
+# Initialise the EagleSnapshot instance
+snapshot = pyread_eagle.EagleSnapshot(snapfile)
+
+# Get our factors of h and a, and the box size
+with h5.File(snapfile,'r') as f:
+    h = f['Header'].attrs['HubbleParam']
+    a = f['Header'].attrs['ExpansionFactor']
+    boxsize = f['Header'].attrs['BoxSize'] * a/h # Note the unit conversion!
+
+# Establish the size of the region - 30 pkpc, but in "code units" for reading the particles
+region_size = 0.03
+region_size_codeunits = region_size * h/a
+
+# Make an empty array to store our results in
+Mstar_30kpc = np.zeros(len(mass_selection))
+
+# Loop over the haloes in the sample
+for i in tqdm(range(len(mass_selection))):
+
+    # Get the centre of potential for the halo in question
+    centre = COP[i]
+    centre_codeunits = centre * (h/a)
+
+    # Run select_region
+    snapshot.select_region(centre_codeunits[0]-region_size_codeunits,centre_codeunits[0]+region_size_codeunits,
+                            centre_codeunits[1]-region_size_codeunits,centre_codeunits[1]+region_size_codeunits,
+                            centre_codeunits[2]-region_size_codeunits,centre_codeunits[2]+region_size_codeunits)
+
+    # Load the coordinates
+    coords = particle_read(4,'Coordinates',snapshot,snapfile)
+
+    # Centre our coordinates and wrap the box
+    coords -= centre
+    coords += boxsize/2.
+    coords %= boxsize
+    coords -= boxsize/2.
+
+    # Compute radial distances and mask to 30 pkpc
+    r2 = np.einsum('...j,...j->...',coords,coords)
+    particle_selection = np.where(r2<region_size**2)[0]
+
+    # Compute stellar masses in apertures and write to output array
+    Mstar_30kpc[i] = np.sum(particle_read(4,'Mass',snapshot,snapfile)[particle_selection]) * 1e10
+
+# Make the plot
+
+fig, ax = plt.subplots(figsize=(8,6))
+
+ax.scatter(np.log10(M200),np.log10(Mstar_30kpc/M200),marker='o',edgecolors='k',facecolors='none',s=5)
+
+ax.set_xlabel(r'$\log(M_{200}/{\rm M}_\odot)$',fontsize=16)
+ax.set_ylabel(r'$\log(M_\star/M_{200})$',fontsize=16)
+
+plt.show()
+```
+This is the first script we've used that takes a decent length of time to run - at time of testing, it took me about 8 minutes to run on `phoenix` but your mileage may vary. As soon as you start dealing with particles, your computation time will shoot up! You should see the following plot at the end:
+![smhmparticle](/images/smhm_from_particles.png). 
+
+
+
+
 
 
 ## Making a radial profile
