@@ -265,14 +265,14 @@ coords %= boxsize
 coords -= boxsize/2.
 
 # Make a test plot of the particles
-fig, ax = plt.subplots(figsize=(16,16))
+fig, ax = plt.subplots(figsize=(8,8))
 ax.scatter(coords[:,0],coords[:,1],marker=',',c='k',s=1)
-ax.set_xlabel(r'$x\,[{\rm pMpc}]$')
-ax.set_ylabel(r'$y\,[{\rm pMpc}]$')
+ax.set_xlabel(r'$x\,[{\rm pMpc}]$',fontsize=14)
+ax.set_ylabel(r'$y\,[{\rm pMpc}]$',fontsize=14)
 plt.show()
 ```
 This code produces the following image:
-![stars_test](/images/star_particles_test.png)
+![stars_test](/images/star_test.png)
 
 Great! We have something that looks somewhat like a spiral galaxy, with a few clumpy satellites around it. However, we didn't get what we asked for - some of the particles are from outside the 200 pkpc cube that we specified with `select_region`, because _the module has loaded in all particles in the chunks that contain our hash keys_. We have a little more work to do now to 'mask' this region to a spherical aperture of radius 100 pkpc.
 
@@ -291,15 +291,14 @@ particle_selection = np.where(r2<region_size**2)[0]
 coords = coords[particle_selection,:]
 
 # Now let's make another scatter plot
-fig, ax = plt.subplots(figsize=(16,16))
+fig, ax = plt.subplots(figsize=(8,8))
 ax.scatter(coords[:,0],coords[:,1],marker=',',c='k',s=1)
-ax.set_xlabel(r'$x\,[{\rm pMpc}]$')
-ax.set_ylabel(r'$y\,[{\rm pMpc}]$')
-plt.savefig('/home/arijdav1/figures/eagle_guide/star_particles_masked.png')
+ax.set_xlabel(r'$x\,[{\rm pMpc}]$',fontsize=14)
+ax.set_ylabel(r'$y\,[{\rm pMpc}]$',fontsize=14)
 plt.show()
 ```
 Now we get:
-![stars_masked](/images/star_particles_masked.png)
+![stars_masked](/images/star_masked.png)
 
 Perfect - we now have only the particles within our spherical aperture, and (if you squint a little) it does look like a spiral galaxy. Note that the shape looks different to before, because the aspect ratio of the plot has changed.
 
