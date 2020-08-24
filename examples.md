@@ -434,9 +434,75 @@ for key in data.keys():
     f.create_dataset(key,data[key])
 ```
 
-## Making a radial profile
+## Making histograms of particle properties
 
-## Making 1D and 2D histograms of particle properties
+Let's take a look at the properties of the gas in haloes, which can broadly be separated into the interstellar medium (ISM) and the circumgalactic medium (CGM). We can explore the distributions of the properties of this gas by making histograms in one or two dimensions.
+
+### 1D histograms
+
+Two of the most important properties of gas particles are their **temperatures** and **densities**. First, lets return to Group 32 in Ref-L0025N0376 and load in these particle properties:
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from catalogue_reading import *
+from particle_reading import *
+
+groupnumber = 32
+sim = 'L0025N0376'
+model = 'REFERENCE'
+tag = '028_z000p000'
+
+snapfile = '/hpcdata0/simulations/EAGLE/' + sim + '/' + model + '/data/snapshot_'+tag+'/snap_'+tag+'.0.hdf5'
+
+first_subhalo = catalogue_read('FOF','FirstSubhaloID',sim=sim,model=model,tag=tag)
+COP = catalogue_read('Subhalo','CentreOfPotential',sim=sim,model=model,tag=tag)[first_subhalo,:]
+centre = COP[groupnumber-1,:]
+
+# Our region size will be the virial radius r_200 for our chosen group
+region_size = catalogue_read('FOF','Group_R_Crit200',sim=sim,model=model,tag=tag)[groupnumber-1]
+
+snapshot = pyread_eagle.EagleSnapshot(snapfile)
+
+with h5.File(snapfile,'r') as f:
+    h = f['Header'].attrs['HubbleParam']
+    a = f['Header'].attrs['ExpansionFactor']
+    boxsize = f['Header'].attrs['BoxSize'] * a/h
+
+centre_codeunits = centre * h/a
+region_size_codeunits = region_size * h/a
+
+snapshot.select_region(centre_codeunits[0]-region_size_codeunits,centre_codeunits[0]+region_size_codeunits,
+                        centre_codeunits[1]-region_size_codeunits,centre_codeunits[1]+region_size_codeunits,
+                        centre_codeunits[2]-region_size_codeunits,centre_codeunits[2]+region_size_codeunits)
+
+# Load in coordinates of the gas this time (PartType 0)
+coords = particle_read(0,'Coordinates',snapshot,snapfile)
+
+coords -= centre
+coords += boxsize/2.
+coords %= boxsize
+coords -= boxsize/2.
+
+r2 = np.einsum('...j,...j->...',coords,coords)
+particle_selection = np.where(r2<region_size**2)[0]
+
+# Load density and temperature.
+# I'm going to use particle_read to get the density in cgs units (g/cm^3)
+density = particle_read(0,'Density',snapshot,snapfile,cgs_units=True)[particle_selection]
+temperature = particle_read(0,'Temperature',snapshot,snapfile)[particle_selection]
+
+# When working with densities, we typically use the hydrogen number density n_H (in cm^-3)
+# To get this, we need the hydrogen abundance of the particle (m_H/m_tot)
+H_abund = particle_read(0,'SmoothedElementAbundance/Hydrogen',snapshot,snapfile)[particle_selection]
+
+n_H = density * H_abund/1.6737e-24 # multiply by abundance and divide by hydrogen mass
+```
+
+We now have the temperature (in K) and hydrogen number density (in cm^-3) for all gas within the virial radius r_200 for this group.
+
+
+## Making a radial profile
 
 ## Making pretty pictures with py-sphviewer
 
