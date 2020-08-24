@@ -245,12 +245,12 @@ region_size = 0.1
 
 # First, we need to convert our region to "code units" to feed into pyread_eagle
 centre_codeunits = centre * h/a
-region_size = region_size * h/a
+region_size_codeunits = region_size * h/a
 
 # Run the select_region method
-snapshot.select_region(centre_codeunits[0]-region_size,centre_codeunits[0]+region_size,
-                        centre_codeunits[1]-region_size,centre_codeunits[1]+region_size,
-                        centre_codeunits[2]-region_size,centre_codeunits[2]+region_size)
+snapshot.select_region(centre_codeunits[0]-region_size_codeunits,centre_codeunits[0]+region_size_codeunits,
+                        centre_codeunits[1]-region_size_codeunits,centre_codeunits[1]+region_size_codeunits,
+                        centre_codeunits[2]-region_size_codeunits,centre_codeunits[2]+region_size_codeunits)
 
 # Load in the star particle co-ordinates. Remember our function does h and a corrections for us.
 coords = particle_read(4,'Coordinates',snapshot,snapfile)
@@ -298,7 +298,7 @@ ax.set_ylabel(r'$y\,[{\rm pMpc}]$',fontsize=14)
 plt.show()
 ```
 Now we get:
-![stars_masked](/images/star_masked.png)
+![stars_masked](/images/star_particles_masked.png)
 
 Perfect - we now have only the particles within our spherical aperture, and (if you squint a little) it does look like a spiral galaxy. Note that the shape looks different to before, because the aspect ratio of the plot has changed.
 
