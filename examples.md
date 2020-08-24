@@ -414,6 +414,21 @@ There are a few ways to overcome this issue:
 
 ## Saving your pre-crunched numbers
 
+Given that our analysis can take a very long time, it's a good idea to save the results of your code for future use. It would be mad to re-run code like the above just to make a small adjustment to the plot, for example - it's far more efficient to output your data to an hdf5 file, and load that in when you want to create your plot.
+
+Doing this is easy with the `h5py` module, like so:
+```python
+import h5py as h5
+
+f = h5.File('test.hdf5','w')
+
+f.create_dataset('M200',data=M200)
+f.create_dataset('Mstar_30kpc',data=Mstar_30kpc)
+
+f.close()
+```
+You can then explore your newly-created file with HDFView and open it in python whenever you need to. `h5py` also has a `create_group` function, should you be writing many datasets that you need to keep organised.
+
 ## Making a radial profile
 
 ## Making 1D and 2D histograms of particle properties
