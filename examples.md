@@ -82,6 +82,7 @@ plt.savefig('/path/to/your/directory/smhm_meanmedian.png')
 plt.show()
 ```
 This produces the following plot:
+
 ![Image](/images/smhm_meanmedian.png)
 
 As you can see, the curves are very similar, but there are some differences in detail. The median becomes a poor representation of the data at high mass, where there are very few data points per bin. At low mass, you'll see that the mean cuts off before the median - this is because there are a few low-mass haloes containing no stars, producing `log(0)=-inf` errors that break the mean. You'll need to use your judgement to decide which of the mean or median is the appropriate statistic. 
@@ -123,6 +124,7 @@ plt.savefig('/path/to/your/directory/smhm_lowess.png')
 plt.show()
 ```
 As you can see, there are a couple of extra steps; we must make sure there are no invalid datapoints (NaNs or infs), and sort the data in order of ascending x value. We get the following:
+
 ![lowess](/images/smhm_lowess.png)
 
 You'll immediately notice that this method gets the answer rather wrong at high mass. This is because there are very few datapoints here and LOWESS is, in this case, still fitting to the closest 20% of datapoints, skewing the fitting. You can get around this by adjusting the fraction of the data used for fitting.
@@ -272,6 +274,7 @@ ax.set_ylabel(r'$y\,[{\rm pMpc}]$',fontsize=14)
 plt.show()
 ```
 This code produces the following image:
+
 ![stars_test](/images/star_test.png)
 
 Great! We have something that looks somewhat like a spiral galaxy, with a few clumpy satellites around it. However, we didn't get what we asked for - some of the particles are from outside the 200 pkpc cube that we specified with `select_region`, because _the module has loaded in all particles in the chunks that contain our hash keys_. We have a little more work to do now to 'mask' this region to a spherical aperture of radius 100 pkpc.
@@ -298,6 +301,7 @@ ax.set_ylabel(r'$y\,[{\rm pMpc}]$',fontsize=14)
 plt.show()
 ```
 Now we get:
+
 ![stars_masked](/images/star_particles_masked.png)
 
 Perfect - we now have only the particles within our spherical aperture, and (if you squint a little) it does look like a spiral galaxy. Note that the shape looks different to before, because the aspect ratio of the plot has changed.
@@ -398,12 +402,17 @@ ax.set_ylabel(r'$\log(M_\star/M_{200})$',fontsize=16)
 plt.show()
 ```
 This is the first script we've used that takes a decent length of time to run - at time of testing, it took me about 8 minutes to run on `phoenix` but your mileage may vary. As soon as you start dealing with particles, your computation time will shoot up! You should see the following plot at the end:
+
 ![smhmparticle](/images/smhm_from_particles.png). 
 
+Comparison with the plots we made earlier reveal that this is a pared-down version of the SMHM relation for Ref-L0100N1504, with far fewer objects due to the 16x smaller volume. Have a go at running the above code for the 100 Mpc simulation and you'll see from `tqdm` that the code is going to take far, far longer to run. This is partly due to us simply having many more objects to loop over, but is also the case because the larger simulation has many more very massive galaxies/haloes, which live in busier environments. `pyread_eagle` therefore has much more data to load in each time. These objects have to be worked through first, as the FOF catalogues go from more- to less-massive; you'll therefore notice that the iteration gradually speeds up until the zippy speeds of `Ref-L0025N0376` analysis are reached. This is why we always test our code on the smaller volumes first, before going for the big box.
 
+There are a few ways to overcome this issue:
+- Patience! You can leave your code running in a NoMachine session and it will happily tick away until you've got what you need
+- Parallel processing. The `mpi4py` module allows you to run Pythong code in parallel with MPI - you could split up the objects you want to work through onto different MPI ranks, potentially speeding up your analysis dramatically. Doing this is a little beyond the scope of this guide, however if you fancy giving it a try there are some nice explanations of how it works [here](https://rabernat.github.io/research_computing/parallel-programming-with-mpi-for-python.html). Be careful of how much memory you're using when doing this, and be considerate to others using the machines.
+- In some use-cases, it may be faster to load in the whole simulation volume at once and mask out the regions you need. In my experience, however, it tends to be faster to use `pyread_eagle` in its intended fashion.
 
-
-
+## Saving your pre-crunched numbers
 
 ## Making a radial profile
 
