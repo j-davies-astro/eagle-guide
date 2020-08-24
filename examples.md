@@ -274,9 +274,45 @@ plt.show()
 This code produces the following image:
 ![stars_test](/images/star_particles_test.png)
 
+Great! We have something that looks somewhat like a spiral galaxy, with a few clumpy satellites around it. However, we didn't get what we asked for - some of the particles are from outside the 200 pkpc cube that we specified with `select_region`, because _the module has loaded in all particles in the chunks that contain our hash keys_. We have a little more work to do now to 'mask' this region to a spherical aperture of radius 100 pkpc.
 
+```python
+# Get the radii^2 of all particles from the centre
+
+# You could do:
+r2 = coords[0]**2 + coords[1]**2 + coords[2]**2
+# However I like to use np.einsum, as it's faster for very large datasets
+# It does Einstein summation operations
+r2 = np.einsum('...j,...j->...',coords,coords)
+
+# Now we can make a mask to the spherical aperture
+particle_selection = np.where(r2<region_size**2)[0]
+
+coords = coords[particle_selection,:]
+
+# Now let's make another scatter plot
+fig, ax = plt.subplots(figsize=(16,16))
+ax.scatter(coords[:,0],coords[:,1],marker=',',c='k',s=1)
+ax.set_xlabel(r'$x\,[{\rm pMpc}]$')
+ax.set_ylabel(r'$y\,[{\rm pMpc}]$')
+plt.savefig('/home/arijdav1/figures/eagle_guide/star_particles_masked.png')
+plt.show()
+```
+Now we get:
+![stars_masked](/images/star_particles_masked.png)
+
+Perfect - we now have only the particles within our spherical aperture, and (if you squint a little) it does look like a spiral galaxy. Note that the shape looks different to before, because the aspect ratio of the plot has changed.
+
+This all seems rather laborious for the sake of just loading a few particles in. The beauty of it, however, is that now our `EagleSnapshot` instance is initialised and we have our `particle_selection` mask for cutting the data down to a spherical aperture, working with other particle properties within this aperture is very simple. For example, if we wanted to know the total stellar mass within this aperture, this can now be done in one line:
+```python
+Mstar_100kpc = np.sum(particle_read(4,'Mass',snapshot,snapfile)[particle_selection]) * 1e10
+print(Mstar_100kpc)
+```
+You'll see that this is a little more than the 30 pkpc stellar mass we printed earlier, due to the wider aperture.
 
 ## Calculating a quantity using particles for all haloes in a sample
+
+
 
 ## Making a radial profile
 
