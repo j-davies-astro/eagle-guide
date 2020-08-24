@@ -427,7 +427,12 @@ f.create_dataset('Mstar_30kpc',data=Mstar_30kpc)
 
 f.close()
 ```
-You can then explore your newly-created file with HDFView and open it in python whenever you need to. `h5py` also has a `create_group` function, should you be writing many datasets that you need to keep organised.
+You can then explore your newly-created file with HDFView and open it in python whenever you need to. `h5py` also has a `create_group` function, should you be writing many datasets that you need to keep organised. I like to wrap my data up in a dictionary, so that writing to an hdf5 file at the end is very efficient, for example if we have a `dict` called `data`:
+
+```python
+for key in data.keys():
+    f.create_dataset(key,data[key])
+```
 
 ## Making a radial profile
 
