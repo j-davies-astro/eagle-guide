@@ -544,7 +544,23 @@ The `density` argument does the normalisation to the total mass. Now we get:
 
 ![hists_normed](/images/1dhists_weighted.png)
 
-These distributions are informative as they are, however to really gain a grasp of the particle distribution in _phase space_, it's very useful to plot the 
+These distributions are informative as they are, however to really gain a grasp of the particle distribution in _phase space_, it's very useful to be able to see both the densities and temperatures of particles at the same time. There are a variety of ways to do this, though in my opinion the most straightforward and aesthetically pleasing method is to use `plt.hexbin` as follows:
+```python
+fig, ax = plt.subplots(figsize=(8,6))
+hexes = ax.hexbin(n_H,temperature,C=mass,gridsize=50,bins='log',cmap='viridis',mincnt=1,reduce_C_function=np.sum)
+
+cbar = plt.colorbar(hexes)
+cbar.ax.set_ylabel(r'$\log_{10}(M_{\rm gas})\,[{\rm M}_\odot]$',fontsize=16)
+
+ax.set_xlabel(r'$\log_{10}(n_{\rm H})\,[{\rm cm}^{-3}]$',fontsize=16)
+ax.set_ylabel(r'$\log_{10}(T)\,[{\rm K}]$',fontsize=16)
+plt.show()
+```
+This code will plot a 2D histogram as a 50x50 grid of hexagons, coloured by the log of the total mass in each hexagon:
+
+![phase](/images/phase.png)
+
+Plots like these are brilliant for gaining insight into the state of gas in the simulations. For example, in the bottom right you can see dense, cool particles forming a straight line - these are particles in the ISM on EAGLE's effective equation of state. In the upper left, you can see a big cloud of hot, low-density material - this is the "hot CGM", and the trail of gas connecting this to the ISM represents material cooling onto the disc.
 
 
 ## Making a radial profile
