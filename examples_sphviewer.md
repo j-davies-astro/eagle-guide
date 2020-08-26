@@ -121,4 +121,4 @@ Have a play with the camera and try making images of the different particle type
 
 Finally, a caveat: `py-sphviewer` does not use the Wendland C2 kernel that is actually used for smoothing in EAGLE, and is therefore inconsistent with the SPH implementation of the simulation. You can fix this yourself fairly easily in the code by adding your own kernel, if you know a bit of C. There are also a few issues with small-scale smoothing (check out the [pull requests on GitHub](https://github.com/alejandrobll/py-sphviewer/pull/19)) that I don't think have been resolved as yet, so I recommend only using the module for visualisation purposes and not for detailed scientific studies. 
 
-[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_sphviewer.md)
+[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_sphviewer)
