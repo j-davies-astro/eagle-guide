@@ -2,6 +2,17 @@
 
 To help you get to grips with all the details I've covered on previous pages, I'll now show you several examples of how to do some standard "simulation tasks". These should hopefully cover many of the types of analysis you'll be doing when working with EAGLE.
 
+I strongly recommend you go through these in order, as some sections rely on information and/or code in previous ones!
+
+[Using the catalogues I: Stellar mass - halo mass relation](https://j-davies-ari.github.io/eagle-guide/examples_smhm.md)
+[Showing running means, medians and "fancy medians"](https://j-davies-ari.github.io/eagle-guide/examples_stats.md)
+[Using the catalogues II: Galaxy stellar mass function](https://j-davies-ari.github.io/eagle-guide/examples_gsmf.md)
+[Loading particles within a spherical aperture around a galaxy](https://j-davies-ari.github.io/eagle-guide/examples_aperture.md)
+[Calculating a quantity using particles for all haloes in a sample](https://j-davies-ari.github.io/eagle-guide/examples_sample.md)
+[Making histograms of particle properties](https://j-davies-ari.github.io/eagle-guide/examples_hists.md)
+[Tracing galaxies through time](https://j-davies-ari.github.io/eagle-guide/examples_tracing.md)
+[Making pretty pictures with py-sphviewer](https://j-davies-ari.github.io/eagle-guide/examples_sphviewer.md)
+
 ## Using the catalogues I: Stellar mass - halo mass relation
 
 Here's a very simple plot to make using only the galaxy catalogues. The stellar mass-halo mass relation is very important as it describes how efficient galaxy formation is in haloes of a given mass. We can make this plot by creating a sample of haloes from the `FOF` table and getting their central galaxy stellar masses from the `Subhalo` table, like so:
@@ -412,7 +423,7 @@ There are a few ways to overcome this issue:
 - Parallel processing. The `mpi4py` module allows you to run Pythong code in parallel with MPI - you could split up the objects you want to work through onto different MPI ranks, potentially speeding up your analysis dramatically. Doing this is a little beyond the scope of this guide, however if you fancy giving it a try there are some nice explanations of how it works [here](https://rabernat.github.io/research_computing/parallel-programming-with-mpi-for-python.html). Be careful of how much memory you're using when doing this, and be considerate to others using the machines.
 - In some use-cases, it may be faster to load in the whole simulation volume at once and mask out the regions you need. In my experience, however, it tends to be faster to use `pyread_eagle` in its intended fashion.
 
-## Saving your pre-crunched numbers
+### Saving your pre-crunched numbers
 
 Given that our analysis can take a very long time, it's a good idea to save the results of your code for future use. It would be mad to re-run code like the above just to make a small adjustment to the plot, for example - it's far more efficient to output your data to an hdf5 file, and load that in when you want to create your plot.
 
