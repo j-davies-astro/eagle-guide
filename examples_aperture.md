@@ -142,4 +142,4 @@ You'll see that this is a little more than the 30 pkpc stellar mass we printed e
 
 Of course, this whole process can be wrapped up in a function that incorporates `particle_read`, but does the region selection and aperture masking as well. I won't go into this here, but you can check out my `eagle_tools.read` module [here](https://github.com/j-davies-ari/eagle_tools/blob/master/read.py) for a rather involved (and currently poorly-documented) example. It's essentially a wrapper for `pyread_eagle` in which I treat a simulation snapshot as a python `class` and automate the process of selecting a region and masking a spherical (or cubic) aperture, among other useful methods.
 
-[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_aperture.md)
+[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_aperture)
