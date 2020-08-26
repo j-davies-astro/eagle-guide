@@ -12,6 +12,8 @@
 
 [Making histograms of particle properties](https://j-davies-ari.github.io/eagle-guide/examples_hists.md)
 
+[Making radial profiles](https://j-davies-ari.github.io/eagle-guide/examples_profile.md)
+
 [Tracing galaxies through time](https://j-davies-ari.github.io/eagle-guide/examples_tracing.md)
 
 [Making pretty pictures with py-sphviewer](https://j-davies-ari.github.io/eagle-guide/examples_sphviewer.md)
