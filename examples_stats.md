@@ -95,4 +95,4 @@ As you can see, there are a couple of extra steps; we must make sure there are n
 
 You'll immediately notice that this method gets the answer rather wrong at high mass. This is because there are very few datapoints here and LOWESS is, in this case, still fitting to the closest 20% of datapoints, skewing the fitting. You can get around this by adjusting the fraction of the data used for fitting.
 
-[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_stats.md)
+[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_stats)
