@@ -269,7 +269,7 @@ tag = '028_z000p000'
 M200 = catalogue_read('FOF','Group_M_Crit200',sim=sim,model=model,tag=tag) * 1e10
 
 # The group numbers are simply an ascending sequence from 1 to N_groups
-groupnumbers = np.arange(len(M200)+1)
+groupnumbers = np.arange(len(M200)) + 1
 
 print(len(M200),' haloes in catalogue')
 print(M200)
