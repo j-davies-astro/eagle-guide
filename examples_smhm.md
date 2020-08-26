@@ -67,4 +67,4 @@ This tells you a couple of things about galaxy formation straight away:
 - In a given volume, very massive objects are rare and low-mass objects are very numerous. This is because the universe is hierarchical.
 - Galaxy formation is most efficient in haloes of M_200 ~ 10^12 solar masses, which tend to host Milky Way-like galaxies. 
 
-[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_smhm.md)
+[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_smhm)
