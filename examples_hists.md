@@ -146,4 +146,4 @@ This code will plot a 2D histogram as a 50x50 grid of hexagons, coloured by the 
 
 Plots like these are brilliant for gaining insight into the state of gas in the simulations. For example, in the bottom right you can see dense, cool particles forming a straight line - these are particles in the ISM on EAGLE's effective equation of state. In the upper left, you can see a big cloud of hot, low-density material - this is the "hot CGM", and the trail of gas connecting this to the ISM represents material cooling onto the disc.
 
-[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_hists.md)
+[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_hists)
