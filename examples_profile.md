@@ -128,4 +128,4 @@ plt.show()
 
 This is generally the best way to produce density profiles.
 
-[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_profile.md)
+[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_profile)
