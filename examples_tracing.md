@@ -28,4 +28,4 @@ With this merger tree in hand, the user can find the `GroupNumber` and `SubGroup
 
 I won't go into examples of how to use the database here, as great examples can be found in the release paper by [McAlpine et al. (2016)](https://www.sciencedirect.com/science/article/pii/S2213133716300130?via%3Dihub).
 
-[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_tracing.md)
+[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_tracing)
