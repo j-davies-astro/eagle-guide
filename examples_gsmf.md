@@ -80,4 +80,4 @@ This produces a good match to the Schaye+15 plot, though not an exact one as the
 
 The plot also gives you an idea of the _sampling_ in each simulation volume; in a nutshell, it tells you what's 'available' in each box. As you can see, the bigger the boxes probe to higher masses and rarer objects. For example, the Ref-L0100N1504 volume is the only one to host any galaxies more massive than 10^11.5 solar masses, while the Recal-L0025N0752 volume contains no galaxies above 10^11 solar masses.
 
-[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_gsmf.md)
+[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_gsmf)
