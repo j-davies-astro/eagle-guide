@@ -1,22 +1,22 @@
 # Examples of common EAGLE tasks
 
-[Using the catalogues I: Stellar mass - halo mass relation](https://j-davies-ari.github.io/eagle-guide/examples_smhm)
+[Using the catalogues I: Stellar mass - halo mass relation](https://j-davies-astro.github.io/eagle-guide/examples_smhm)
 
-[Showing running means, medians and "fancy medians"](https://j-davies-ari.github.io/eagle-guide/examples_stats)
+[Showing running means, medians and "fancy medians"](https://j-davies-astro.github.io/eagle-guide/examples_stats)
 
-[Using the catalogues II: Galaxy stellar mass function](https://j-davies-ari.github.io/eagle-guide/examples_gsmf)
+[Using the catalogues II: Galaxy stellar mass function](https://j-davies-astro.github.io/eagle-guide/examples_gsmf)
 
-[Loading particles within a spherical aperture around a galaxy](https://j-davies-ari.github.io/eagle-guide/examples_aperture)
+[Loading particles within a spherical aperture around a galaxy](https://j-davies-astro.github.io/eagle-guide/examples_aperture)
 
-[Calculating a quantity using particles for all haloes in a sample](https://j-davies-ari.github.io/eagle-guide/examples_sample)
+[Calculating a quantity using particles for all haloes in a sample](https://j-davies-astro.github.io/eagle-guide/examples_sample)
 
-[Making histograms of particle properties](https://j-davies-ari.github.io/eagle-guide/examples_hists)
+[Making histograms of particle properties](https://j-davies-astro.github.io/eagle-guide/examples_hists)
 
-[Making radial profiles](https://j-davies-ari.github.io/eagle-guide/examples_profile)
+[Making radial profiles](https://j-davies-astro.github.io/eagle-guide/examples_profile)
 
-[Tracing galaxies through time](https://j-davies-ari.github.io/eagle-guide/examples_tracing)
+[Tracing galaxies through time](https://j-davies-astro.github.io/eagle-guide/examples_tracing)
 
-[Making pretty pictures with py-sphviewer](https://j-davies-ari.github.io/eagle-guide/examples_sphviewer)
+[Making pretty pictures with py-sphviewer](https://j-davies-astro.github.io/eagle-guide/examples_sphviewer)
 
 ## Using the catalogues I: Stellar mass - halo mass relation
 
@@ -65,6 +65,6 @@ This should produce the following figure:
 
 This tells you a couple of things about galaxy formation straight away:
 - In a given volume, very massive objects are rare and low-mass objects are very numerous. This is because the universe is hierarchical.
-- Galaxy formation is most efficient in haloes of M_200 ~ 10^12 solar masses, which tend to host Milky Way-like galaxies. 
+- Galaxy formation is most efficient in haloes of M_200 ~ 10^12 solar masses, which tend to host Milky Way-like galaxies.
 
-[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_smhm)
+[Back to top](https://j-davies-astro.github.io/eagle-guide/examples_smhm)

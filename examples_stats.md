@@ -1,22 +1,22 @@
 # Examples of common EAGLE tasks
 
-[Using the catalogues I: Stellar mass - halo mass relation](https://j-davies-ari.github.io/eagle-guide/examples_smhm)
+[Using the catalogues I: Stellar mass - halo mass relation](https://j-davies-astro.github.io/eagle-guide/examples_smhm)
 
-[Showing running means, medians and "fancy medians"](https://j-davies-ari.github.io/eagle-guide/examples_stats)
+[Showing running means, medians and "fancy medians"](https://j-davies-astro.github.io/eagle-guide/examples_stats)
 
-[Using the catalogues II: Galaxy stellar mass function](https://j-davies-ari.github.io/eagle-guide/examples_gsmf)
+[Using the catalogues II: Galaxy stellar mass function](https://j-davies-astro.github.io/eagle-guide/examples_gsmf)
 
-[Loading particles within a spherical aperture around a galaxy](https://j-davies-ari.github.io/eagle-guide/examples_aperture)
+[Loading particles within a spherical aperture around a galaxy](https://j-davies-astro.github.io/eagle-guide/examples_aperture)
 
-[Calculating a quantity using particles for all haloes in a sample](https://j-davies-ari.github.io/eagle-guide/examples_sample)
+[Calculating a quantity using particles for all haloes in a sample](https://j-davies-astro.github.io/eagle-guide/examples_sample)
 
-[Making histograms of particle properties](https://j-davies-ari.github.io/eagle-guide/examples_hists)
+[Making histograms of particle properties](https://j-davies-astro.github.io/eagle-guide/examples_hists)
 
-[Making radial profiles](https://j-davies-ari.github.io/eagle-guide/examples_profile)
+[Making radial profiles](https://j-davies-astro.github.io/eagle-guide/examples_profile)
 
-[Tracing galaxies through time](https://j-davies-ari.github.io/eagle-guide/examples_tracing)
+[Tracing galaxies through time](https://j-davies-astro.github.io/eagle-guide/examples_tracing)
 
-[Making pretty pictures with py-sphviewer](https://j-davies-ari.github.io/eagle-guide/examples_sphviewer)
+[Making pretty pictures with py-sphviewer](https://j-davies-astro.github.io/eagle-guide/examples_sphviewer)
 
 ## Showing running means, medians and "fancy medians"
 Our plot of the SMHM relation is very 'saturated' - there are so many points at low mass that they form an unreadable black blob. To interpret the data, we really need to show some kind of statistic as a function of what's on the x axis. To do this quickly and easily, I recommend using `scipy.stats.binned_statistic`. You can read the [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binned_statistic.html) for info on the module's functionality; it will essentially compute various useful quantities such as the mean, median, standard deviation, sum and others, within a specified number of bins, or within pre-defined bins.
@@ -51,7 +51,7 @@ This produces the following plot:
 
 ![Image](/images/smhm_meanmedian.png)
 
-As you can see, the curves are very similar, but there are some differences in detail. The median becomes a poor representation of the data at high mass, where there are very few data points per bin. At low mass, you'll see that the mean cuts off before the median - this is because there are a few low-mass haloes containing no stars, producing `log(0)=-inf` errors that break the mean. You'll need to use your judgement to decide which of the mean or median is the appropriate statistic. 
+As you can see, the curves are very similar, but there are some differences in detail. The median becomes a poor representation of the data at high mass, where there are very few data points per bin. At low mass, you'll see that the mean cuts off before the median - this is because there are a few low-mass haloes containing no stars, producing `log(0)=-inf` errors that break the mean. You'll need to use your judgement to decide which of the mean or median is the appropriate statistic.
 
 Generally, for large datasets, or for datasets with large dynamic ranges, I prefer to use the median as the mean can be very strongly weighted towards larger values. For example, see the plot in the Appendix of [this paper](https://arxiv.org/pdf/1810.07696.pdf) - the mean is at least a factor of 10 higher than the median in the top panel because X-ray luminosity has an enormous dynamic range at fixed M_200.
 
@@ -95,4 +95,4 @@ As you can see, there are a couple of extra steps; we must make sure there are n
 
 You'll immediately notice that this method gets the answer rather wrong at high mass. This is because there are very few datapoints here and LOWESS is, in this case, still fitting to the closest 20% of datapoints, skewing the fitting. You can get around this by adjusting the fraction of the data used for fitting.
 
-[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_stats)
+[Back to top](https://j-davies-astro.github.io/eagle-guide/examples_stats)

@@ -1,22 +1,22 @@
 # Examples of common EAGLE tasks
 
-[Using the catalogues I: Stellar mass - halo mass relation](https://j-davies-ari.github.io/eagle-guide/examples_smhm)
+[Using the catalogues I: Stellar mass - halo mass relation](https://j-davies-astro.github.io/eagle-guide/examples_smhm)
 
-[Showing running means, medians and "fancy medians"](https://j-davies-ari.github.io/eagle-guide/examples_stats)
+[Showing running means, medians and "fancy medians"](https://j-davies-astro.github.io/eagle-guide/examples_stats)
 
-[Using the catalogues II: Galaxy stellar mass function](https://j-davies-ari.github.io/eagle-guide/examples_gsmf)
+[Using the catalogues II: Galaxy stellar mass function](https://j-davies-astro.github.io/eagle-guide/examples_gsmf)
 
-[Loading particles within a spherical aperture around a galaxy](https://j-davies-ari.github.io/eagle-guide/examples_aperture)
+[Loading particles within a spherical aperture around a galaxy](https://j-davies-astro.github.io/eagle-guide/examples_aperture)
 
-[Calculating a quantity using particles for all haloes in a sample](https://j-davies-ari.github.io/eagle-guide/examples_sample)
+[Calculating a quantity using particles for all haloes in a sample](https://j-davies-astro.github.io/eagle-guide/examples_sample)
 
-[Making histograms of particle properties](https://j-davies-ari.github.io/eagle-guide/examples_hists)
+[Making histograms of particle properties](https://j-davies-astro.github.io/eagle-guide/examples_hists)
 
-[Making radial profiles](https://j-davies-ari.github.io/eagle-guide/examples_profile)
+[Making radial profiles](https://j-davies-astro.github.io/eagle-guide/examples_profile)
 
-[Tracing galaxies through time](https://j-davies-ari.github.io/eagle-guide/examples_tracing)
+[Tracing galaxies through time](https://j-davies-astro.github.io/eagle-guide/examples_tracing)
 
-[Making pretty pictures with py-sphviewer](https://j-davies-ari.github.io/eagle-guide/examples_sphviewer)
+[Making pretty pictures with py-sphviewer](https://j-davies-astro.github.io/eagle-guide/examples_sphviewer)
 
 ## Making pretty pictures with py-sphviewer
 
@@ -28,7 +28,7 @@ git clone https://github.com/alejandrobll/py-sphviewer.git
 cd py-sphviewer
 python setup.py install --user
 ```
-The module may be installed with `pip`, however you may want to make your own alterations to the C code so it's good to have your own copy. 
+The module may be installed with `pip`, however you may want to make your own alterations to the C code so it's good to have your own copy.
 
 `py-sphviewer` makes it really easy to make images from smoothed particle hydrodynamics (SPH) simulations, which is easier said than done. If you've read up on how SPH works (which you should), you'll know that to simulate a fluid with discrete particles, the properties of SPH particles are smoothed over a kernel with a scale length depending on the distance to an Nth nearest neighbour. The properties of the fluid (such as density, temperature) are then given by convolving the kernels of all particles at any point in space.
 
@@ -119,6 +119,6 @@ plt.show()
 
 Have a play with the camera and try making images of the different particle types. Note that when making images of the dark matter, you need to account for the fact that `PartType 1` does not have a smoothing length - you can make `py-sphviewer` compute one for you (see the docs).
 
-Finally, a caveat: `py-sphviewer` does not use the Wendland C2 kernel that is actually used for smoothing in EAGLE, and is therefore inconsistent with the SPH implementation of the simulation. You can fix this yourself fairly easily in the code by adding your own kernel, if you know a bit of C. There are also a few issues with small-scale smoothing (check out the [pull requests on GitHub](https://github.com/alejandrobll/py-sphviewer/pull/19)) that I don't think have been resolved as yet, so I recommend only using the module for visualisation purposes and not for detailed scientific studies. 
+Finally, a caveat: `py-sphviewer` does not use the Wendland C2 kernel that is actually used for smoothing in EAGLE, and is therefore inconsistent with the SPH implementation of the simulation. You can fix this yourself fairly easily in the code by adding your own kernel, if you know a bit of C. There are also a few issues with small-scale smoothing (check out the [pull requests on GitHub](https://github.com/alejandrobll/py-sphviewer/pull/19)) that I don't think have been resolved as yet, so I recommend only using the module for visualisation purposes and not for detailed scientific studies.
 
-[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_sphviewer)
+[Back to top](https://j-davies-astro.github.io/eagle-guide/examples_sphviewer)

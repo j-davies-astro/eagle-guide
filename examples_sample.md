@@ -1,22 +1,22 @@
 # Examples of common EAGLE tasks
 
-[Using the catalogues I: Stellar mass - halo mass relation](https://j-davies-ari.github.io/eagle-guide/examples_smhm)
+[Using the catalogues I: Stellar mass - halo mass relation](https://j-davies-astro.github.io/eagle-guide/examples_smhm)
 
-[Showing running means, medians and "fancy medians"](https://j-davies-ari.github.io/eagle-guide/examples_stats)
+[Showing running means, medians and "fancy medians"](https://j-davies-astro.github.io/eagle-guide/examples_stats)
 
-[Using the catalogues II: Galaxy stellar mass function](https://j-davies-ari.github.io/eagle-guide/examples_gsmf)
+[Using the catalogues II: Galaxy stellar mass function](https://j-davies-astro.github.io/eagle-guide/examples_gsmf)
 
-[Loading particles within a spherical aperture around a galaxy](https://j-davies-ari.github.io/eagle-guide/examples_aperture)
+[Loading particles within a spherical aperture around a galaxy](https://j-davies-astro.github.io/eagle-guide/examples_aperture)
 
-[Calculating a quantity using particles for all haloes in a sample](https://j-davies-ari.github.io/eagle-guide/examples_sample)
+[Calculating a quantity using particles for all haloes in a sample](https://j-davies-astro.github.io/eagle-guide/examples_sample)
 
-[Making histograms of particle properties](https://j-davies-ari.github.io/eagle-guide/examples_hists)
+[Making histograms of particle properties](https://j-davies-astro.github.io/eagle-guide/examples_hists)
 
-[Making radial profiles](https://j-davies-ari.github.io/eagle-guide/examples_profile)
+[Making radial profiles](https://j-davies-astro.github.io/eagle-guide/examples_profile)
 
-[Tracing galaxies through time](https://j-davies-ari.github.io/eagle-guide/examples_tracing)
+[Tracing galaxies through time](https://j-davies-astro.github.io/eagle-guide/examples_tracing)
 
-[Making pretty pictures with py-sphviewer](https://j-davies-ari.github.io/eagle-guide/examples_sphviewer)
+[Making pretty pictures with py-sphviewer](https://j-davies-astro.github.io/eagle-guide/examples_sphviewer)
 
 ## Calculating a quantity using particles for all haloes in a sample
 
@@ -106,7 +106,7 @@ plt.show()
 ```
 This is the first script we've used that takes a decent length of time to run - at time of testing, it took me about 8 minutes to run on `phoenix` but your mileage may vary. As soon as you start dealing with particles, your computation time will shoot up! You should see the following plot at the end:
 
-![smhmparticle](/images/smhm_from_particles.png). 
+![smhmparticle](/images/smhm_from_particles.png).
 
 Comparison with the plots we made earlier reveal that this is a pared-down version of the SMHM relation for Ref-L0100N1504, with far fewer objects due to the 16x smaller volume. Have a go at running the above code for the 100 Mpc simulation and you'll see from `tqdm` that the code is going to take far, far longer to run. This is partly due to us simply having many more objects to loop over, but is also the case because the larger simulation has many more very massive galaxies/haloes, which live in busier environments. `pyread_eagle` therefore has much more data to load in each time. These objects have to be worked through first, as the FOF catalogues go from more- to less-massive; you'll therefore notice that the iteration gradually speeds up until the zippy speeds of `Ref-L0025N0376` analysis are reached. This is why we always test our code on the smaller volumes first, before going for the big box.
 
@@ -137,4 +137,4 @@ for key in data.keys():
     f.create_dataset(key,data[key])
 ```
 
-[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_sample)
+[Back to top](https://j-davies-astro.github.io/eagle-guide/examples_sample)

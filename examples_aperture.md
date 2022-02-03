@@ -1,22 +1,22 @@
 # Examples of common EAGLE tasks
 
-[Using the catalogues I: Stellar mass - halo mass relation](https://j-davies-ari.github.io/eagle-guide/examples_smhm)
+[Using the catalogues I: Stellar mass - halo mass relation](https://j-davies-astro.github.io/eagle-guide/examples_smhm)
 
-[Showing running means, medians and "fancy medians"](https://j-davies-ari.github.io/eagle-guide/examples_stats)
+[Showing running means, medians and "fancy medians"](https://j-davies-astro.github.io/eagle-guide/examples_stats)
 
-[Using the catalogues II: Galaxy stellar mass function](https://j-davies-ari.github.io/eagle-guide/examples_gsmf)
+[Using the catalogues II: Galaxy stellar mass function](https://j-davies-astro.github.io/eagle-guide/examples_gsmf)
 
-[Loading particles within a spherical aperture around a galaxy](https://j-davies-ari.github.io/eagle-guide/examples_aperture)
+[Loading particles within a spherical aperture around a galaxy](https://j-davies-astro.github.io/eagle-guide/examples_aperture)
 
-[Calculating a quantity using particles for all haloes in a sample](https://j-davies-ari.github.io/eagle-guide/examples_sample)
+[Calculating a quantity using particles for all haloes in a sample](https://j-davies-astro.github.io/eagle-guide/examples_sample)
 
-[Making histograms of particle properties](https://j-davies-ari.github.io/eagle-guide/examples_hists)
+[Making histograms of particle properties](https://j-davies-astro.github.io/eagle-guide/examples_hists)
 
-[Making radial profiles](https://j-davies-ari.github.io/eagle-guide/examples_profile)
+[Making radial profiles](https://j-davies-astro.github.io/eagle-guide/examples_profile)
 
-[Tracing galaxies through time](https://j-davies-ari.github.io/eagle-guide/examples_tracing)
+[Tracing galaxies through time](https://j-davies-astro.github.io/eagle-guide/examples_tracing)
 
-[Making pretty pictures with py-sphviewer](https://j-davies-ari.github.io/eagle-guide/examples_sphviewer)
+[Making pretty pictures with py-sphviewer](https://j-davies-astro.github.io/eagle-guide/examples_sphviewer)
 
 ## Loading particles within a spherical aperture around a galaxy
 
@@ -140,6 +140,6 @@ print(Mstar_100kpc)
 ```
 You'll see that this is a little more than the 30 pkpc stellar mass we printed earlier, due to the wider aperture.
 
-Of course, this whole process can be wrapped up in a function that incorporates `particle_read`, but does the region selection and aperture masking as well. I won't go into this here, but you can check out my `eagle_tools.read` module [here](https://github.com/j-davies-ari/eagle_tools/blob/master/read.py) for a rather involved (and currently poorly-documented) example. It's essentially a wrapper for `pyread_eagle` in which I treat a simulation snapshot as a python `class` and automate the process of selecting a region and masking a spherical (or cubic) aperture, among other useful methods.
+Of course, this whole process can be wrapped up in a function that incorporates `particle_read`, but does the region selection and aperture masking as well. I won't go into this here, but you can check out my `eagle_tools.read` module [here](https://github.com/j-davies-astro/eagle_tools/blob/master/read.py) for a rather involved (and currently poorly-documented) example. It's essentially a wrapper for `pyread_eagle` in which I treat a simulation snapshot as a python `class` and automate the process of selecting a region and masking a spherical (or cubic) aperture, among other useful methods.
 
-[Back to top](https://j-davies-ari.github.io/eagle-guide/examples_aperture)
+[Back to top](https://j-davies-astro.github.io/eagle-guide/examples_aperture)
